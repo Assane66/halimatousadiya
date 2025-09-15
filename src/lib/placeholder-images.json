@@ -1,3 +1,113 @@
+
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "hero-1",
+      "description": "Muslim children learning in a classroom",
+      "imageUrl": "https://picsum.photos/seed/hero1/1920/1080",
+      "imageHint": "school children"
+    },
+    {
+      "id": "about-1",
+      "description": "Library of an islamic institute",
+      "imageUrl": "https://picsum.photos/seed/about1/600/400",
+      "imageHint": "library books"
+    },
+    {
+      "id": "teacher-1",
+      "description": "Portrait of a male teacher",
+      "imageUrl": "https://picsum.photos/seed/teacher1/200/200",
+      "imageHint": "teacher portrait"
+    },
+    {
+      "id": "teacher-2",
+      "description": "Portrait of a female teacher",
+      "imageUrl": "https://picsum.photos/seed/teacher2/200/200",
+      "imageHint": "teacher portrait"
+    },
+    {
+      "id": "teacher-3",
+      "description": "Portrait of a male teacher",
+      "imageUrl": "https://picsum.photos/seed/teacher3/200/200",
+      "imageHint": "teacher portrait"
+    },
+    {
+      "id": "teacher-4",
+      "description": "Portrait of a female teacher",
+      "imageUrl": "https://picsum.photos/seed/teacher4/200/200",
+      "imageHint": "teacher portrait"
+    },
+    {
+      "id": "program-maternelle",
+      "description": "Children playing with blocks",
+      "imageUrl": "https://picsum.photos/seed/maternelle/600/400",
+      "imageHint": "children playing"
+    },
+    {
+      "id": "program-primaire",
+      "description": "Children writing in notebooks",
+      "imageUrl": "https://picsum.photos/seed/primaire/600/400",
+      "imageHint": "children writing"
+    },
+    {
+      "id": "program-college",
+      "description": "Teenagers in a science lab",
+      "imageUrl": "https://picsum.photos/seed/college/600/400",
+      "imageHint": "teenagers science"
+    },
+    {
+      "id": "blog-1",
+      "description": "Open house event at the school",
+      "imageUrl": "https://picsum.photos/seed/blog1/400/225",
+      "imageHint": "open house"
+    },
+    {
+      "id": "blog-2",
+      "description": "Students receiving awards",
+      "imageUrl": "https://picsum.photos/seed/blog2/400/225",
+      "imageHint": "student awards"
+    },
+    {
+      "id": "blog-3",
+      "description": "Quran competition event",
+      "imageUrl": "https://picsum.photos/seed/blog3/400/225",
+      "imageHint": "quran book"
+    },
+    {
+      "id": "gallery-event1-1",
+      "description": "People at an open house",
+      "imageUrl": "https://picsum.photos/seed/gallery11/400/300",
+      "imageHint": "event crowd"
+    },
+    {
+      "id": "gallery-event1-2",
+      "description": "A speaker at the open house",
+      "imageUrl": "https://picsum.photos/seed/gallery12/400/300",
+      "imageHint": "event speaker"
+    },
+    {
+      "id": "gallery-event1-3",
+      "description": "Parents and teachers talking",
+      "imageUrl": "https://picsum.photos/seed/gallery13/400/300",
+      "imageHint": "parents teachers"
+    },
+    {
+      "id": "gallery-event2-1",
+      "description": "Students performing on stage",
+      "imageUrl": "https://picsum.photos/seed/gallery21/400/300",
+      "imageHint": "students stage"
+    },
+    {
+      "id": "gallery-event2-2",
+      "description": "A student receiving a diploma",
+      "imageUrl": "https://picsum.photos/seed/gallery22/400/300",
+      "imageHint": "student diploma"
+    },
+    {
+      "id": "gallery-event2-3",
+      "description": "Group photo of graduates",
+      "imageUrl": "https://picsum.photos/seed/gallery23/400/300",
+      "imageHint": "graduates photo"
+    }
+  ]
 }
