@@ -50,12 +50,6 @@
       "imageHint": "children writing"
     },
     {
-      "id": "program-college",
-      "description": "Teenagers in a science lab",
-      "imageUrl": "https://picsum.photos/seed/college/600/400",
-      "imageHint": "teenagers science"
-    },
-    {
       "id": "blog-1",
       "description": "Open house event at the school",
       "imageUrl": "https://picsum.photos/seed/blog1/400/225",

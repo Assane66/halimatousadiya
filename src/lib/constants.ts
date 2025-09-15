@@ -140,16 +140,6 @@ export const PROGRAMS = [
     admission:
       "Ouvert aux enfants à partir de 6 ans. Test de niveau requis pour les nouvelles admissions.",
   },
-  {
-    slug: "college",
-    name: "Collège (à venir)",
-    imageUrlId: "program-college",
-    description:
-      "Notre programme de collège est en cours d'élaboration pour offrir une continuité éducative à nos élèves, avec un accent sur l'excellence académique et la maturité spirituelle.",
-    objectives: [],
-    subjects: [],
-    admission: "Informations à venir.",
-  },
 ];
 
 export const GALLERY_EVENTS = {
