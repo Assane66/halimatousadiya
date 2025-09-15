@@ -16,6 +16,7 @@ export const NAV_LINKS = [
   { href: "/", label: "Accueil" },
   { href: "/a-propos", label: "À propos" },
   { href: "/programmes", label: "Programmes" },
+  { href: "/frais-scolarite", label: "Frais de scolarité" },
   { href: "/actualites", label: "Actualités" },
   { href: "/galerie", label: "Galerie" },
   { href: "/contact", label: "Contact" },
@@ -120,9 +121,9 @@ export const PROGRAMS = [
     name: "Primaire",
     imageUrlId: "program-primaire",
     description:
-      "Un programme complet qui consolide les bases académiques et religieuses, formant des élèves équilibrés et prêts pour les défis du collège.",
+      "Un programme franco-arabe complet qui consolide les bases académiques et religieuses. Nous accueillons les élèves dans les classes de CI, CP, CE1, CE2, CM1 et CM2, les formant à devenir équilibrés et prêts pour les défis du collège.",
     objectives: [
-      "Maîtriser la lecture, l'écriture et le calcul.",
+      "Maîtriser la lecture, l'écriture et le calcul en français et en arabe.",
       "Approfondir les connaissances en sciences islamiques (Coran, Hadith, Fiqh).",
       "Développer l'esprit critique et l'autonomie.",
       "Inculquer le sens des responsabilités et le respect.",
