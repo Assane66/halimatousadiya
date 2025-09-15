@@ -68,40 +68,28 @@
       "imageHint": "quran book"
     },
     {
-      "id": "gallery-event1-1",
-      "description": "People at an open house",
-      "imageUrl": "https://picsum.photos/seed/gallery11/400/300",
-      "imageHint": "event crowd"
+      "id": "gallery-1",
+      "description": "Students in classroom",
+      "imageUrl": "https://res.cloudinary.com/dm6yuokre/image/upload/v1757731353/IMG-20250913-WA0020_tnxlst.jpg",
+      "imageHint": "students classroom"
     },
     {
-      "id": "gallery-event1-2",
-      "description": "A speaker at the open house",
-      "imageUrl": "https://picsum.photos/seed/gallery12/400/300",
-      "imageHint": "event speaker"
+      "id": "gallery-2",
+      "description": "Students in schoolyard",
+      "imageUrl": "https://res.cloudinary.com/dm6yuokre/image/upload/v1757731396/IMG-20250913-WA0067_jw6bod.jpg",
+      "imageHint": "students schoolyard"
     },
     {
-      "id": "gallery-event1-3",
-      "description": "Parents and teachers talking",
-      "imageUrl": "https://picsum.photos/seed/gallery13/400/300",
-      "imageHint": "parents teachers"
+      "id": "gallery-3",
+      "description": "Students in uniform",
+      "imageUrl": "https://res.cloudinary.com/dm6yuokre/image/upload/v1757731375/IMG-20250913-WA0054_gyexjx.jpg",
+      "imageHint": "students uniform"
     },
     {
-      "id": "gallery-event2-1",
-      "description": "Students performing on stage",
-      "imageUrl": "https://picsum.photos/seed/gallery21/400/300",
-      "imageHint": "students stage"
-    },
-    {
-      "id": "gallery-event2-2",
-      "description": "A student receiving a diploma",
-      "imageUrl": "https://picsum.photos/seed/gallery22/400/300",
-      "imageHint": "student diploma"
-    },
-    {
-      "id": "gallery-event2-3",
-      "description": "Group photo of graduates",
-      "imageUrl": "https://picsum.photos/seed/gallery23/400/300",
-      "imageHint": "graduates photo"
+      "id": "gallery-4",
+      "description": "Students during an activity",
+      "imageUrl": "https://res.cloudinary.com/dm6yuokre/image/upload/v1757731353/IMG-20250913-WA0032_tjdoq0.jpg",
+      "imageHint": "students activity"
     }
   ]
 }

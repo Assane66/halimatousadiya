@@ -142,45 +142,25 @@ export const PROGRAMS = [
   },
 ];
 
-export const GALLERY_EVENTS = {
-  "journee-portes-ouvertes-2023": {
-    name: "Journée Portes Ouvertes",
-    images: [
-      {
-        id: "1",
-        imageUrlId: "gallery-event1-1",
-        description: "Vue d'ensemble de la cour pendant l'événement.",
-      },
-      {
-        id: "2",
-        imageUrlId: "gallery-event1-2",
-        description: "Le directeur s'adressant aux parents.",
-      },
-      {
-        id: "3",
-        imageUrlId: "gallery-event1-3",
-        description: "Échanges entre enseignants et familles.",
-      },
-    ],
+export const GALLERY_IMAGES = [
+  {
+    id: "1",
+    imageUrlId: "gallery-1",
+    description: "Élèves en classe.",
   },
-  "fete-de-fin-d-annee": {
-    name: "Fête de fin d'année",
-    images: [
-      {
-        id: "4",
-        imageUrlId: "gallery-event2-1",
-        description: "Spectacle des enfants de la maternelle.",
-      },
-      {
-        id: "5",
-        imageUrlId: "gallery-event2-2",
-        description: "Remise de diplôme à un élève méritant.",
-      },
-      {
-        id: "6",
-        imageUrlId: "gallery-event2-3",
-        description: "Photo de groupe des lauréats.",
-      },
-    ],
+  {
+    id: "2",
+    imageUrlId: "gallery-2",
+    description: "Élèves dans la cour de l'école.",
   },
-};
+  {
+    id: "3",
+    imageUrlId: "gallery-3",
+    description: "Élèves en uniforme.",
+  },
+  {
+    id: "4",
+    imageUrlId: "gallery-4",
+    description: "Élèves pendant une activité.",
+  },
+];
