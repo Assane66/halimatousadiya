@@ -90,6 +90,24 @@
       "description": "Students during an activity",
       "imageUrl": "https://res.cloudinary.com/dm6yuokre/image/upload/v1757731353/IMG-20250913-WA0032_tjdoq0.jpg",
       "imageHint": "students activity"
+    },
+    {
+      "id": "gallery-5",
+      "description": "Students in classroom with teacher",
+      "imageUrl": "https://res.cloudinary.com/dm6yuokre/image/upload/v1757923080/IMG-20250915-WA0047_ebjqbu.jpg",
+      "imageHint": "students classroom"
+    },
+    {
+      "id": "gallery-6",
+      "description": "Students posing for a photo",
+      "imageUrl": "https://res.cloudinary.com/dm6yuokre/image/upload/v1757923077/IMG-20250913-WA0019_2_gylzcp.jpg",
+      "imageHint": "students photo"
+    },
+    {
+      "id": "gallery-7",
+      "description": "Students playing outside",
+      "imageUrl": "https://res.cloudinary.com/dm6yuokre/image/upload/v1757922073/IMG-20250913-WA0062_jav8ip.jpg",
+      "imageHint": "students playing"
     }
   ]
 }

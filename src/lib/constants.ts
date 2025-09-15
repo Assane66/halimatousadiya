@@ -163,4 +163,19 @@ export const GALLERY_IMAGES = [
     imageUrlId: "gallery-4",
     description: "Élèves pendant une activité.",
   },
+  {
+    id: "5",
+    imageUrlId: "gallery-5",
+    description: "Élèves en classe avec leur enseignant.",
+  },
+  {
+    id: "6",
+    imageUrlId: "gallery-6",
+    description: "Élèves posant pour une photo.",
+  },
+  {
+    id: "7",
+    imageUrlId: "gallery-7",
+    description: "Élèves jouant dehors.",
+  },
 ];
