@@ -39,9 +39,9 @@
     },
     {
       "id": "program-maternelle",
-      "description": "Children playing with blocks",
-      "imageUrl": "https://picsum.photos/seed/maternelle/600/400",
-      "imageHint": "children playing"
+      "description": "Enfants de la maternelle",
+      "imageUrl": "https://res.cloudinary.com/dm6yuokre/image/upload/v1757731352/IMG-20250913-WA0034_a4eeeq.jpg",
+      "imageHint": "kindergarten children"
     },
     {
       "id": "program-primaire",
