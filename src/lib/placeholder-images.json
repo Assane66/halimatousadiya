@@ -9,9 +9,9 @@
     },
     {
       "id": "about-1",
-      "description": "Library of an islamic institute",
-      "imageUrl": "https://picsum.photos/seed/about1/600/400",
-      "imageHint": "library books"
+      "description": "Muslim children studying",
+      "imageUrl": "https://res.cloudinary.com/dm6yuokre/image/upload/v1757731357/IMG-20250913-WA0055_mxi4mz.jpg",
+      "imageHint": "children studying"
     },
     {
       "id": "teacher-1",
