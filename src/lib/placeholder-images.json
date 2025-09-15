@@ -45,9 +45,9 @@
     },
     {
       "id": "program-primaire",
-      "description": "Children writing in notebooks",
-      "imageUrl": "https://picsum.photos/seed/primaire/600/400",
-      "imageHint": "children writing"
+      "description": "Élèves du primaire en classe",
+      "imageUrl": "https://res.cloudinary.com/dm6yuokre/image/upload/v1757731352/IMG-20250913-WA0049_bnagw2.jpg",
+      "imageHint": "students classroom"
     },
     {
       "id": "blog-1",
