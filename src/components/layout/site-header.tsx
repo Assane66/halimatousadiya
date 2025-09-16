@@ -75,7 +75,7 @@ export function SiteHeader() {
               <WhatsappIcon className="h-4 w-4" />
             </a>
             <a
-              href="https://www.instagram.com/institut_halimatou_sadiya/"
+              href="https://www.instagram.com/daarahalimatou_saadiya/"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Instagram"
