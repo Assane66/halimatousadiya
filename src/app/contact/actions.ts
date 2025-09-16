@@ -22,6 +22,7 @@ type State = {
     _form?: string[];
   } | null;
   message?: string | null;
+  success?: boolean;
 } | null;
 
 export async function submitContactForm(
@@ -39,18 +40,31 @@ export async function submitContactForm(
     return {
       errors: validatedFields.error.flatten().fieldErrors,
       message: "Veuillez corriger les erreurs et réessayer.",
+      success: false,
     };
   }
+
+  // Alternative temporaire : Afficher les infos de contact au lieu d'envoyer un email
+  // car la configuration du domaine Resend n'est pas finalisée.
+  return {
+    message: `Merci pour votre intérêt ! Pour finaliser votre demande, veuillez nous contacter directement par email à ${CONTACT_INFO.email} ou par téléphone.`,
+    errors: null,
+    success: true,
+  };
+
+  /*
+  // --- CODE ORIGINAL POUR ENVOYER UN EMAIL (à réactiver après vérification du domaine) ---
 
   const { name, email, phone, message } = validatedFields.data;
 
   if (!process.env.RESEND_API_KEY) {
     console.error("RESEND_API_KEY is not set.");
     return {
-      message: "Le service d'email n'est pas disponible pour le moment.",
+      message: "Le service d'email est momentanément indisponible.",
       errors: {
-        _form: ["Le service d'email n'est pas configuré. Veuillez contacter l'administrateur."],
+        _form: ["Le service d'email n'est pas configuré."],
       },
+      success: false,
     };
   }
   
@@ -58,7 +72,7 @@ export async function submitContactForm(
 
   try {
     const { data, error } = await resend.emails.send({
-      from: `Formulaire de Contact <onboarding@resend.dev>`,
+      from: `Institut YHS <onboarding@resend.dev>`,
       to: [CONTACT_INFO.email],
       subject: `Nouveau message de ${name}`,
       reply_to: email,
@@ -72,12 +86,14 @@ export async function submitContactForm(
         errors: {
           _form: ["Erreur lors de l'envoi de l'email. Il est possible que le domaine d'envoi ne soit pas vérifié sur Resend."],
         },
+        success: false,
       };
     }
 
     return {
       message: "Merci ! Votre message a été envoyé avec succès.",
       errors: null,
+      success: true,
     };
   } catch (error) {
     console.error("Failed to send email", error);
@@ -86,6 +102,8 @@ export async function submitContactForm(
        errors: {
           _form: ["Une erreur interne est survenue."],
         },
+        success: false,
     };
   }
+  */
 }

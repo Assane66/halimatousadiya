@@ -22,7 +22,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { submitContactForm } from "./actions";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { AlertTriangle } from "lucide-react";
+import { AlertTriangle, CheckCircle } from "lucide-react";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -52,13 +52,10 @@ export function ContactForm() {
   });
 
   useEffect(() => {
-    if (state?.message && !state.errors) {
-      toast({
-        title: "Succès",
-        description: state.message,
-      });
+    if (state?.message && state.success) {
+      // Don't show a toast for the alternative method, show an Alert instead.
       form.reset();
-    } else if (state?.message && state.errors && !state.errors._form) {
+    } else if (state?.message && !state.success) {
        toast({
         title: "Erreur de validation",
         description: state.message,
@@ -73,78 +70,88 @@ export function ContactForm() {
         <CardTitle>Envoyez-nous un message</CardTitle>
       </CardHeader>
       <CardContent>
-        <Form {...form}>
-          <form action={formAction} className="space-y-6">
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Nom complet</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Votre nom" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Votre email" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="phone"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Téléphone (Optionnel)</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Votre numéro de téléphone" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="message"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Message</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      placeholder="Tapez votre message ici..."
-                      className="min-h-[120px]"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+        {state?.success && state.message ? (
+            <Alert className="mb-6">
+              <CheckCircle className="h-4 w-4" />
+              <AlertTitle>Merci !</AlertTitle>
+              <AlertDescription>
+                {state.message}
+              </AlertDescription>
+            </Alert>
+        ) : (
+          <Form {...form}>
+            <form action={formAction} className="space-y-6">
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Nom complet</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Votre nom" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Votre email" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="phone"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Téléphone (Optionnel)</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Votre numéro de téléphone" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="message"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Message</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Tapez votre message ici..."
+                        className="min-h-[120px]"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-            {state?.errors?._form && (
-               <Alert variant="destructive">
+              {state?.errors?._form && (
+                <Alert variant="destructive">
                   <AlertTriangle className="h-4 w-4" />
                   <AlertTitle>Service indisponible</AlertTitle>
                   <AlertDescription>
                     {state.errors._form[0]}
                   </AlertDescription>
                 </Alert>
-            )}
+              )}
 
-            <SubmitButton />
-          </form>
-        </Form>
+              <SubmitButton />
+            </form>
+          </Form>
+        )}
       </CardContent>
     </Card>
   );
