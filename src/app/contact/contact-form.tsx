@@ -1,11 +1,9 @@
 
 "use client";
 
-import { useFormState, useFormStatus } from "react-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { useEffect } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -19,10 +17,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useToast } from "@/hooks/use-toast";
-import { submitContactForm } from "./actions";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { AlertTriangle, CheckCircle } from "lucide-react";
+import { useState } from "react";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -38,8 +33,7 @@ const formSchema = z.object({
 });
 
 export function ContactForm() {
-  const { toast } = useToast();
-  const [state, formAction] = useFormState(submitContactForm, null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -51,18 +45,31 @@ export function ContactForm() {
     },
   });
 
-  useEffect(() => {
-    if (state?.message && state.success) {
-      // Don't show a toast for the alternative method, show an Alert instead.
-      form.reset();
-    } else if (state?.message && !state.success) {
-       toast({
-        title: "Erreur de validation",
-        description: state.message,
-        variant: "destructive",
-      });
-    }
-  }, [state, toast, form]);
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsSubmitting(true);
+    const { name, email, phone, message } = values;
+
+    const whatsappMessage = `
+Bonjour,
+Je vous contacte depuis votre site web.
+*Nom :* ${name}
+*Email :* ${email}
+*Téléphone :* ${phone || "Non fourni"}
+*Message :*
+${message}
+    `;
+
+    const encodedMessage = encodeURIComponent(whatsappMessage.trim());
+    const whatsappUrl = `https://wa.me/221784513633?text=${encodedMessage}`;
+
+    window.open(whatsappUrl, "_blank");
+    
+    // Reset form after a short delay
+    setTimeout(() => {
+        form.reset();
+        setIsSubmitting(false);
+    }, 1000);
+  }
 
   return (
     <Card>
@@ -70,99 +77,76 @@ export function ContactForm() {
         <CardTitle>Envoyez-nous un message</CardTitle>
       </CardHeader>
       <CardContent>
-        {state?.success && state.message ? (
-            <Alert className="mb-6">
-              <CheckCircle className="h-4 w-4" />
-              <AlertTitle>Merci !</AlertTitle>
-              <AlertDescription>
-                {state.message}
-              </AlertDescription>
-            </Alert>
-        ) : (
-          <Form {...form}>
-            <form action={formAction} className="space-y-6">
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Nom complet</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Votre nom" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Votre email" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="phone"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Téléphone (Optionnel)</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Votre numéro de téléphone" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="message"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Message</FormLabel>
-                    <FormControl>
-                      <Textarea
-                        placeholder="Tapez votre message ici..."
-                        className="min-h-[120px]"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              {state?.errors?._form && (
-                <Alert variant="destructive">
-                  <AlertTriangle className="h-4 w-4" />
-                  <AlertTitle>Service indisponible</AlertTitle>
-                  <AlertDescription>
-                    {state.errors._form[0]}
-                  </AlertDescription>
-                </Alert>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Nom complet</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Votre nom" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
               )}
+            />
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Votre email" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="phone"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Téléphone (Optionnel)</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Votre numéro de téléphone"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="message"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Message</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder="Tapez votre message ici..."
+                      className="min-h-[120px]"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-              <SubmitButton />
-            </form>
-          </Form>
-        )}
+            <Button type="submit" disabled={isSubmitting} className="w-full">
+              {isSubmitting
+                ? "Redirection vers WhatsApp..."
+                : "Envoyer via WhatsApp"}
+            </Button>
+          </form>
+        </Form>
       </CardContent>
     </Card>
-  );
-}
-
-function SubmitButton() {
-  const { pending } = useFormStatus();
-
-  return (
-    <Button type="submit" disabled={pending} className="w-full">
-      {pending ? "Envoi en cours..." : "Envoyer le message"}
-    </Button>
   );
 }

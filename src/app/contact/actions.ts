@@ -1,6 +1,9 @@
 
 "use server";
 
+// This file is no longer used for the contact form as it now redirects to WhatsApp.
+// It is kept for potential future use or alternative contact methods.
+
 import { z } from "zod";
 import { Resend } from "resend";
 import { CONTACT_INFO } from "@/lib/constants";
@@ -44,66 +47,9 @@ export async function submitContactForm(
     };
   }
 
-  // Alternative temporaire : Afficher les infos de contact au lieu d'envoyer un email
-  // car la configuration du domaine Resend n'est pas finalisée.
   return {
     message: `Merci pour votre intérêt ! Pour finaliser votre demande, veuillez nous contacter directement par email à ${CONTACT_INFO.email} ou par téléphone.`,
     errors: null,
     success: true,
   };
-
-  /*
-  // --- CODE ORIGINAL POUR ENVOYER UN EMAIL (à réactiver après vérification du domaine) ---
-
-  const { name, email, phone, message } = validatedFields.data;
-
-  if (!process.env.RESEND_API_KEY) {
-    console.error("RESEND_API_KEY is not set.");
-    return {
-      message: "Le service d'email est momentanément indisponible.",
-      errors: {
-        _form: ["Le service d'email n'est pas configuré."],
-      },
-      success: false,
-    };
-  }
-  
-  const resend = new Resend(process.env.RESEND_API_KEY);
-
-  try {
-    const { data, error } = await resend.emails.send({
-      from: `Institut YHS <onboarding@resend.dev>`,
-      to: [CONTACT_INFO.email],
-      subject: `Nouveau message de ${name}`,
-      reply_to: email,
-      react: ContactEmailTemplate({ name, email, phone, message }),
-    });
-
-    if (error) {
-      console.error("Resend error:", error);
-      return {
-        message: "Une erreur est survenue lors de l'envoi du message.",
-        errors: {
-          _form: ["Erreur lors de l'envoi de l'email. Il est possible que le domaine d'envoi ne soit pas vérifié sur Resend."],
-        },
-        success: false,
-      };
-    }
-
-    return {
-      message: "Merci ! Votre message a été envoyé avec succès.",
-      errors: null,
-      success: true,
-    };
-  } catch (error) {
-    console.error("Failed to send email", error);
-    return {
-      message: "Une erreur interne est survenue. Veuillez réessayer plus tard.",
-       errors: {
-          _form: ["Une erreur interne est survenue."],
-        },
-        success: false,
-    };
-  }
-  */
 }
