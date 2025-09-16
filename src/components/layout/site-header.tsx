@@ -83,7 +83,7 @@ export function SiteHeader() {
             ))}
           </nav>
           <Button asChild className="hidden md:flex" size="lg">
-            <Link href="/contact">Obtenir Un Devis</Link>
+            <Link href="/contact">S'INSCRIRE</Link>
           </Button>
 
           <div className="flex items-center gap-2 md:hidden">
@@ -119,7 +119,7 @@ function MobileNav() {
             </Link>
           ))}
            <Button asChild className="mt-4" size="lg">
-            <Link href="/contact">Obtenir Un Devis</Link>
+            <Link href="/contact">S'INSCRIRE</Link>
           </Button>
         </div>
       </SheetContent>

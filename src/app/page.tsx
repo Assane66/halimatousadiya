@@ -35,7 +35,7 @@ export default function Home() {
             </h1>
             <Button asChild size="lg" className="mt-4">
               <Link href="/contact">
-                Obtenir un devis <ArrowRight className="ml-2" />
+                S'INSCRIRE <ArrowRight className="ml-2" />
               </Link>
             </Button>
           </div>
