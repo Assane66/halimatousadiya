@@ -4,6 +4,7 @@
 import { z } from "zod";
 import { Resend } from "resend";
 import { CONTACT_INFO } from "@/lib/constants";
+import { ContactEmailTemplate } from "@/components/email-template";
 
 const contactSchema = z.object({
   name: z.string().min(2, "Le nom est requis."),
@@ -44,11 +45,11 @@ export async function submitContactForm(
   const { name, email, phone, message } = validatedFields.data;
 
   if (!process.env.RESEND_API_KEY) {
-    console.error("RESEND_API_KEY is not set. Email not sent.");
+    console.error("RESEND_API_KEY is not set.");
     return {
-      message: "Le service d'email n'est pas disponible pour le moment. Veuillez nous contacter directement.",
+      message: "Le service d'email n'est pas disponible pour le moment.",
       errors: {
-        _form: ["Le service d'email n'est pas disponible pour le moment. Veuillez nous contacter directement par email ou téléphone."],
+        _form: ["Le service d'email n'est pas configuré. Veuillez contacter l'administrateur."],
       },
     };
   }
@@ -57,11 +58,11 @@ export async function submitContactForm(
 
   try {
     const { data, error } = await resend.emails.send({
-      from: `Contact Form <onboarding@resend.dev>`,
+      from: `Formulaire de Contact <onboarding@resend.dev>`,
       to: [CONTACT_INFO.email],
-      subject: "Nouveau message depuis le formulaire de contact",
-      text: `Nom: ${name}\nEmail: ${email}\nTéléphone: ${phone || "Non fourni"}\n\nMessage:\n${message}`,
+      subject: `Nouveau message de ${name}`,
       reply_to: email,
+      react: ContactEmailTemplate({ name, email, phone, message }),
     });
 
     if (error) {
@@ -69,7 +70,7 @@ export async function submitContactForm(
       return {
         message: "Une erreur est survenue lors de l'envoi du message.",
         errors: {
-          _form: ["Erreur lors de l'envoi de l'email. Le domaine d'envoi n'est peut-être pas vérifié."],
+          _form: ["Erreur lors de l'envoi de l'email. Il est possible que le domaine d'envoi ne soit pas vérifié sur Resend."],
         },
       };
     }
