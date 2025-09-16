@@ -69,7 +69,7 @@ export const BLOG_POSTS = [
   },
   {
     slug: "remise-des-prix-excellence",
-    title: "DAARA VACANCES 15 AOUT - 15 SEPTEMBRE",
+    title: "Daara Vacances 15 Août - 15 Septembre",
     date: "25 JUILLET 2025",
     imageUrlId: "blog-2",
     excerpt:
