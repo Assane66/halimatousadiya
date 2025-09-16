@@ -1,3 +1,4 @@
+
 export const SITE_NAME = "Boun Nourou";
 export const SITE_TAGLINE = "Éclairer les esprits, nourrir les âmes.";
 export const SITE_DESCRIPTION =
@@ -17,6 +18,7 @@ export const NAV_LINKS = [
   { href: "/a-propos", label: "À propos" },
   { href: "/programmes", label: "Programmes" },
   { href: "/actualites", label: "Évènements" },
+  { href: "/galerie", label: "Galerie" },
   { href: "/contact", label: "Contact" },
 ];
 
