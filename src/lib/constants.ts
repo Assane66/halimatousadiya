@@ -82,7 +82,7 @@ export const BLOG_POSTS = [
   },
   {
     slug: "concours-recitation-coran",
-    title: "Concours Annuel de Récitation du Coran",
+    title: "Conférence Annuel de Récitation du Coran",
     date: "10 Avril 2024",
     imageUrlId: "blog-3",
     excerpt:
