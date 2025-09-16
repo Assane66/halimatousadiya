@@ -1,14 +1,22 @@
 import Link from "next/link";
-import { Hexagon } from "lucide-react";
+import Image from "next/image";
 import { SITE_NAME } from "@/lib/constants";
 
 export function Logo() {
   return (
     <Link href="/" className="flex items-center space-x-2">
-      <Hexagon className="h-6 w-6 text-primary" />
-      <span className="font-headline text-xl font-bold text-foreground">
-        {SITE_NAME}
+      <Image
+        src="/logo-placeholder.svg"
+        alt="Boun Nourou logo"
+        width={32}
+        height={32}
+      />
+      <span className="font-headline text-xl font-bold uppercase text-foreground">
+        Boun Nourou
       </span>
+      <div className="text-xs font-light leading-tight">
+        DAARA MODERNE <br /> DE L'EXCELLENCE
+      </div>
     </Link>
   );
 }

@@ -5,7 +5,7 @@ export const SITE_DESCRIPTION =
 export const CONTACT_INFO = {
   phone1: "77 446 94 15",
   phone2: "70 841 22 46",
-  email: "yayehalimatousaadiya@gmail.com",
+  email: "contact@boun-nourou.com",
   address: "Tivaouane Peulh, Apix Îlot 1.",
   fullAddress: "Tivaouane Peulh, Apix Îlot 1, Sénégal",
   mapEmbedUrl:
@@ -16,9 +16,7 @@ export const NAV_LINKS = [
   { href: "/", label: "Accueil" },
   { href: "/a-propos", label: "À propos" },
   { href: "/programmes", label: "Programmes" },
-  { href: "/frais-scolarite", label: "Frais de scolarité" },
-  { href: "/actualites", label: "Actualités" },
-  { href: "/galerie", label: "Galerie" },
+  { href: "/actualites", label: "Évènements" },
   { href: "/contact", label: "Contact" },
 ];
 
