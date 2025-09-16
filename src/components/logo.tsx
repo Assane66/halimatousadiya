@@ -8,10 +8,10 @@ export function Logo() {
       <Image
         src="/logo-placeholder.svg"
         alt="Institut Islamique Yaye Halimatou Saadiya logo"
-        width={32}
-        height={32}
+        width={48}
+        height={48}
       />
-      <span className="font-headline text-xl font-bold uppercase text-foreground">
+      <span className="font-headline text-lg font-bold uppercase text-foreground">
         Institut Islamique Yaye Halimatou Saadiya
       </span>
     </Link>
