@@ -70,7 +70,7 @@ export const BLOG_POSTS = [
   {
     slug: "remise-des-prix-excellence",
     title: "DAARA VACANCES 15 AOUT - 15 SEPTEMBRE",
-    date: "28 Avril 2024",
+    date: "25 JUILLET 2025",
     imageUrlId: "blog-2",
     excerpt:
       "L'institut a célébré ses élèves les plus méritants lors d'une cérémonie riche en émotions et en fierté.",
