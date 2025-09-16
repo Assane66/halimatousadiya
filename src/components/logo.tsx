@@ -14,9 +14,6 @@ export function Logo() {
       <span className="font-headline text-xl font-bold uppercase text-foreground">
         Boun Nourou
       </span>
-      <div className="text-xs font-light leading-tight">
-        DAARA MODERNE <br /> DE L'EXCELLENCE
-      </div>
     </Link>
   );
 }
