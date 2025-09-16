@@ -73,7 +73,7 @@ export const BLOG_POSTS = [
     date: "25 JUILLET 2025",
     imageUrlId: "blog-2",
     excerpt:
-      "L'institut a célébré ses élèves les plus méritants lors d'une cérémonie riche en émotions et en fierté.",
+      "Du 15 août au 15 septembre, l’Institut a organisé Daara Vacances, un mois d’apprentissage, de discipline et de spiritualité, renforçant le savoir et les valeurs islamiques de ses élèves",
     content: `
       <p>La traditionnelle cérémonie de remise des prix a mis à l'honneur les efforts et l'excellence académique de nos élèves tout au long de l'année. Des prix ont été décernés dans chaque matière et pour chaque niveau, récompensant le travail assidu et la persévérance.</p>
       <p>Ce fut un moment de grande fierté pour les élèves, leurs parents et toute l'équipe enseignante. Le directeur, dans son discours, a rappelé l'importance de viser l'excellence non seulement dans les études, mais aussi dans le comportement et le caractère, conformément à nos valeurs islamiques.</p>
