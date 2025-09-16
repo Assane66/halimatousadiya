@@ -16,7 +16,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
-import { BLOG_POSTS } from "@/lib/constants";
+import { BLOG_POSTS, SITE_NAME } from "@/lib/constants";
 
 export default function Home() {
   const heroImage = PlaceHolderImages.find((img) => img.id === "hero-1");
@@ -24,30 +24,37 @@ export default function Home() {
 
   return (
     <div className="flex flex-col">
-      <section className="relative h-[60vh] w-full">
-        {heroImage && (
-          <Image
-            src={heroImage.imageUrl}
-            alt={heroImage.description}
-            fill
-            className="object-cover"
-            data-ai-hint={heroImage.imageHint}
-            priority
-          />
-        )}
-        <div className="absolute inset-0 bg-black/50" />
-        <div className="relative z-10 flex h-full flex-col items-center justify-center text-center text-white">
-          <h1 className="text-4xl font-bold tracking-tight md:text-6xl lg:text-7xl">
-            Institut Islamique Yaye Halimatou Saadiya
-          </h1>
-          <p className="mt-4 max-w-2xl text-lg md:text-xl">
-            Éclairer les esprits, nourrir les âmes.
-          </p>
-          <Button asChild className="mt-8" size="lg">
-            <Link href="/programmes">
-              Découvrir nos programmes <ArrowRight className="ml-2" />
-            </Link>
-          </Button>
+      <section className="relative grid w-full grid-cols-1 md:grid-cols-2">
+        <div className="relative flex min-h-[60vh] flex-col justify-center bg-background p-8 md:p-16">
+          <div className="max-w-md space-y-4 text-left">
+            <p className="text-sm font-medium uppercase tracking-widest text-primary">
+              Bienvenue à Boun Nourou
+            </p>
+            <h1 className="font-headline text-5xl font-bold tracking-tight text-foreground md:text-7xl">
+              DAARA MODERNE DE L'EXCELLENCE
+            </h1>
+            <p className="font-headline text-3xl text-muted-foreground">
+              Boun Nourou
+            </p>
+            <Button asChild size="lg" className="mt-4">
+              <Link href="/contact">
+                Obtenir un devis <ArrowRight className="ml-2" />
+              </Link>
+            </Button>
+          </div>
+        </div>
+        <div className="relative min-h-[60vh] w-full">
+          {heroImage && (
+            <Image
+              src={heroImage.imageUrl}
+              alt={heroImage.description}
+              fill
+              className="object-cover"
+              data-ai-hint={heroImage.imageHint}
+              priority
+            />
+          )}
+          <div className="absolute inset-0 bg-gradient-to-l from-transparent via-background/50 to-background" />
         </div>
       </section>
 

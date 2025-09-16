@@ -1,4 +1,4 @@
-export const SITE_NAME = "Nur Guidance";
+export const SITE_NAME = "Boun Nourou";
 export const SITE_TAGLINE = "Éclairer les esprits, nourrir les âmes.";
 export const SITE_DESCRIPTION =
   "Site web de l'Institut Islamique Yaye Halimatou Saadiya à Tivaouane Peulh. Nous offrons une éducation islamique et académique de qualité.";

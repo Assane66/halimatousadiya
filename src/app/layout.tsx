@@ -6,7 +6,7 @@ import { SiteFooter } from "@/components/layout/site-footer";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Nur Guidance - Institut Islamique Yaye Halimatou Saadiya",
+  title: "Boun Nourou - DAARA MODERNE DE L'EXCELLENCE",
   description:
     "Institut Islamique Yaye Halimatou Saadiya - Éclairer les esprits, nourrir les âmes.",
 };
