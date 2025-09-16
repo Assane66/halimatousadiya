@@ -46,7 +46,7 @@ export async function submitContactForm(
   if (!process.env.RESEND_API_KEY) {
     console.error("RESEND_API_KEY is not set. Email not sent.");
     return {
-      message: "Le service d'email n'est pas disponible pour le moment. Veuillez nous contacter directement par email ou téléphone.",
+      message: "Le service d'email n'est pas disponible pour le moment. Veuillez nous contacter directement.",
       errors: {
         _form: ["Le service d'email n'est pas disponible pour le moment. Veuillez nous contacter directement par email ou téléphone."],
       },
@@ -69,7 +69,7 @@ export async function submitContactForm(
       return {
         message: "Une erreur est survenue lors de l'envoi du message.",
         errors: {
-          _form: ["Erreur lors de l'envoi de l'email."],
+          _form: ["Erreur lors de l'envoi de l'email. Le domaine d'envoi n'est peut-être pas vérifié."],
         },
       };
     }
