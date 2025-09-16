@@ -11,9 +11,6 @@ export function Logo() {
         width={48}
         height={48}
       />
-      <span className="font-headline text-lg font-bold uppercase text-foreground">
-        Institut Islamique Yaye Halimatou Saadiya
-      </span>
     </Link>
   );
 }
