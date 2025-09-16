@@ -28,14 +28,11 @@ export default function Home() {
         <div className="relative flex min-h-[60vh] flex-col justify-center bg-background p-8 md:p-16">
           <div className="max-w-md space-y-4 text-left">
             <p className="text-sm font-medium uppercase tracking-widest text-primary">
-              Bienvenue à Boun Nourou
+              Bienvenue à l'Institut Islamique Yaye Halimatou Saadiya
             </p>
             <h1 className="font-headline text-5xl font-bold tracking-tight text-foreground md:text-7xl">
               INSTITUT ISLAMIQUE YAYE HALIMATOU SAADIYA
             </h1>
-            <p className="font-headline text-3xl text-muted-foreground">
-              Boun Nourou
-            </p>
             <Button asChild size="lg" className="mt-4">
               <Link href="/contact">
                 Obtenir un devis <ArrowRight className="ml-2" />
