@@ -18,6 +18,7 @@ type State = {
     email?: string[];
     phone?: string[];
     message?: string[];
+    _form?: string[];
   } | null;
   message?: string | null;
 } | null;
@@ -44,11 +45,11 @@ export async function submitContactForm(
 
   if (!process.env.RESEND_API_KEY) {
     console.error("RESEND_API_KEY is not set. Email not sent.");
-    // In a real app, you might want to return a more user-friendly error
-    // but for now, we'll pretend it was successful to not block UI work.
-     return {
+    return {
       message: "Le service d'email n'est pas configuré. Veuillez contacter l'administrateur.",
-      errors: null,
+      errors: {
+        _form: ["Le service d'email n'est pas configuré."],
+      },
     };
   }
   
@@ -67,7 +68,9 @@ export async function submitContactForm(
       console.error("Resend error:", error);
       return {
         message: "Une erreur est survenue lors de l'envoi du message.",
-        errors: null,
+        errors: {
+          _form: ["Erreur lors de l'envoi de l'email."],
+        },
       };
     }
 
@@ -79,7 +82,9 @@ export async function submitContactForm(
     console.error("Failed to send email", error);
     return {
       message: "Une erreur interne est survenue. Veuillez réessayer plus tard.",
-      errors: null,
+       errors: {
+          _form: ["Une erreur interne est survenue."],
+        },
     };
   }
 }

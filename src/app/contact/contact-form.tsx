@@ -20,6 +20,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { submitContactForm } from "./actions";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Terminal } from "lucide-react";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -55,9 +57,9 @@ export function ContactForm() {
         description: state.message,
       });
       form.reset();
-    } else if (state?.message && state.errors) {
-      toast({
-        title: "Erreur",
+    } else if (state?.message && state.errors && !state.errors._form) {
+       toast({
+        title: "Erreur de validation",
         description: state.message,
         variant: "destructive",
       });
@@ -128,6 +130,17 @@ export function ContactForm() {
                 </FormItem>
               )}
             />
+
+            {state?.errors?._form && (
+               <Alert variant="destructive">
+                  <Terminal className="h-4 w-4" />
+                  <AlertTitle>Erreur du serveur</AlertTitle>
+                  <AlertDescription>
+                    {state.errors._form[0]}
+                  </AlertDescription>
+                </Alert>
+            )}
+
             <SubmitButton />
           </form>
         </Form>
