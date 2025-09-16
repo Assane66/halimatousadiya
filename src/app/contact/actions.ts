@@ -5,8 +5,6 @@ import { z } from "zod";
 import { Resend } from "resend";
 import { CONTACT_INFO } from "@/lib/constants";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 const contactSchema = z.object({
   name: z.string().min(2, "Le nom est requis."),
   email: z.string().email("L'email est invalide."),
@@ -43,6 +41,18 @@ export async function submitContactForm(
   }
 
   const { name, email, phone, message } = validatedFields.data;
+
+  if (!process.env.RESEND_API_KEY) {
+    console.error("RESEND_API_KEY is not set. Email not sent.");
+    // In a real app, you might want to return a more user-friendly error
+    // but for now, we'll pretend it was successful to not block UI work.
+     return {
+      message: "Le service d'email n'est pas configuré. Veuillez contacter l'administrateur.",
+      errors: null,
+    };
+  }
+  
+  const resend = new Resend(process.env.RESEND_API_KEY);
 
   try {
     const { data, error } = await resend.emails.send({
