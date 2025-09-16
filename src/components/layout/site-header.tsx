@@ -74,6 +74,15 @@ export function SiteHeader() {
             >
               <WhatsappIcon className="h-4 w-4" />
             </a>
+            <a
+              href="https://www.instagram.com/institut_halimatou_sadiya/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Instagram"
+              className="transition-opacity hover:opacity-80"
+            >
+              <Instagram size={16} />
+            </a>
             <Button
               variant="ghost"
               size="sm"
