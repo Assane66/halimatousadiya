@@ -66,15 +66,6 @@ export function SiteHeader() {
               <Facebook size={16} />
             </a>
             <a
-              href="https://wa.me/+221784513633"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="WhatsApp"
-              className="transition-opacity hover:opacity-80"
-            >
-              <WhatsappIcon className="h-4 w-4" />
-            </a>
-            <a
               href="https://www.instagram.com/daarahalimatou_saadiya/"
               target="_blank"
               rel="noopener noreferrer"
