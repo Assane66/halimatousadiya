@@ -69,7 +69,7 @@ export const BLOG_POSTS = [
   },
   {
     slug: "remise-des-prix-excellence",
-    title: "Cérémonie de Remise des Prix d'Excellence",
+    title: "DAARA VACANCES 15 AOUT - 15 SEPTEMBRE",
     date: "28 Avril 2024",
     imageUrlId: "blog-2",
     excerpt:
