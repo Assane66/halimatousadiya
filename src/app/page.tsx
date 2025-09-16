@@ -31,7 +31,7 @@ export default function Home() {
               Bienvenue à Boun Nourou
             </p>
             <h1 className="font-headline text-5xl font-bold tracking-tight text-foreground md:text-7xl">
-              DAARA MODERNE DE L'EXCELLENCE
+              INSTITUT ISLAMIQUE YAYE HALIMATOU SAADIYA
             </h1>
             <p className="font-headline text-3xl text-muted-foreground">
               Boun Nourou
