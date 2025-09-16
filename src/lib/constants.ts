@@ -6,7 +6,7 @@ export const SITE_DESCRIPTION =
 export const CONTACT_INFO = {
   phone1: "77 446 94 15",
   phone2: "70 841 22 46",
-  email: "yayehalimatousaadiya@gmail.com",
+  email: "instituthalimatousaadiya17@gmail.com",
   address: "Tivaouane Peulh, Apix Îlot 1.",
   fullAddress: "Tivaouane Peulh, Apix Îlot 1, Sénégal",
   mapEmbedUrl:
