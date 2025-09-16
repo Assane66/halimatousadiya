@@ -40,7 +40,13 @@ export function SiteHeader() {
           </div>
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-3">
-              <a href="#" aria-label="Facebook" className="hover:opacity-80">
+              <a
+                href="https://web.facebook.com/profile.php?id=61578747932815"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Facebook"
+                className="hover:opacity-80"
+              >
                 <Facebook size={16} />
               </a>
               <a href="#" aria-label="Twitter" className="hover:opacity-80">
