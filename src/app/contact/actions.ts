@@ -46,9 +46,9 @@ export async function submitContactForm(
   if (!process.env.RESEND_API_KEY) {
     console.error("RESEND_API_KEY is not set. Email not sent.");
     return {
-      message: "Le service d'email n'est pas configuré. Veuillez contacter l'administrateur.",
+      message: "Le service d'email n'est pas disponible pour le moment. Veuillez nous contacter directement par email ou téléphone.",
       errors: {
-        _form: ["Le service d'email n'est pas configuré."],
+        _form: ["Le service d'email n'est pas disponible pour le moment. Veuillez nous contacter directement par email ou téléphone."],
       },
     };
   }
