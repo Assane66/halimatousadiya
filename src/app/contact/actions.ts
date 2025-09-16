@@ -1,6 +1,11 @@
+
 "use server";
 
 import { z } from "zod";
+import { Resend } from "resend";
+import { CONTACT_INFO } from "@/lib/constants";
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 const contactSchema = z.object({
   name: z.string().min(2, "Le nom est requis."),
@@ -37,16 +42,34 @@ export async function submitContactForm(
     };
   }
 
-  // In a real application, you would send an email here using a service like Resend or Nodemailer.
-  // For this example, we'll just log the data to the console.
-  console.log("Contact form submission received:");
-  console.log("Name:", validatedFields.data.name);
-  console.log("Email:", validatedFields.data.email);
-  console.log("Phone:", validatedFields.data.phone);
-  console.log("Message:", validatedFields.data.message);
+  const { name, email, phone, message } = validatedFields.data;
 
-  return {
-    message: "Merci ! Votre message a été envoyé avec succès.",
-    errors: null,
-  };
+  try {
+    const { data, error } = await resend.emails.send({
+      from: `Contact Form <onboarding@resend.dev>`,
+      to: [CONTACT_INFO.email],
+      subject: "Nouveau message depuis le formulaire de contact",
+      text: `Nom: ${name}\nEmail: ${email}\nTéléphone: ${phone || "Non fourni"}\n\nMessage:\n${message}`,
+      reply_to: email,
+    });
+
+    if (error) {
+      console.error("Resend error:", error);
+      return {
+        message: "Une erreur est survenue lors de l'envoi du message.",
+        errors: null,
+      };
+    }
+
+    return {
+      message: "Merci ! Votre message a été envoyé avec succès.",
+      errors: null,
+    };
+  } catch (error) {
+    console.error("Failed to send email", error);
+    return {
+      message: "Une erreur interne est survenue. Veuillez réessayer plus tard.",
+      errors: null,
+    };
+  }
 }
