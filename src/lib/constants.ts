@@ -86,7 +86,7 @@ export const BLOG_POSTS = [
     date: "10 Avril 2024",
     imageUrlId: "blog-3",
     excerpt:
-      "Nos jeunes talents ont brillé lors du concours annuel de mémorisation et de récitation du Saint Coran.",
+      "L’Institut a tenu sa Conférence annuelle de récitation du Coran, un moment spirituel fort marqué par la beauté des voix, la ferveur des élèves et la fierté des parents. Une occasion de célébrer la mémorisation, la maîtrise et l’amour du Livre Saint.",
     content: `
       <p>Pendant le mois béni de Ramadan, l'institut a organisé son concours annuel de récitation du Coran. Des élèves de tous âges ont participé, démontrant une maîtrise et une dévotion impressionnantes.</p>
       <p>Le jury, composé d'enseignants et d'imams locaux, a eu la difficile tâche de départager les candidats. L'événement s'est clôturé par une cérémonie émouvante où les gagnants ont été récompensés, encourageant tous les élèves à poursuivre leur noble quête de mémorisation du Livre d'Allah.</p>
