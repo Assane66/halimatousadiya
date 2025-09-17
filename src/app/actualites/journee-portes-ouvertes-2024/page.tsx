@@ -5,7 +5,7 @@ import { BLOG_POSTS, SITE_NAME } from "@/lib/constants";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 import { Badge } from "@/components/ui/badge";
 
-const post = BLOG_POSTS.find((p) => p.slug === "journee-portes-ouvertes-2024");
+const post = BLOG_POSTS.find((p) => p.slug === "visite-musee-prophete");
 
 export const metadata: Metadata = {
   title: `${post?.title} | Actualités | ${SITE_NAME}`,

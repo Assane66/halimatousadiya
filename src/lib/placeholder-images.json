@@ -51,9 +51,9 @@
     },
     {
       "id": "blog-1",
-      "description": "Open house event at the school",
-      "imageUrl": "https://picsum.photos/seed/blog1/400/225",
-      "imageHint": "open house"
+      "description": "Museum visit",
+      "imageUrl": "https://res.cloudinary.com/dm6yuokre/image/upload/v1758074514/file_00000000466c61f4a37d8f93ee2091ee_wjjkjh.png",
+      "imageHint": "museum interior"
     },
     {
       "id": "blog-2",

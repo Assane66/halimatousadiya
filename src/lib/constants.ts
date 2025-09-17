@@ -55,16 +55,16 @@ export const TEAM_MEMBERS = [
 
 export const BLOG_POSTS = [
   {
-    slug: "journee-portes-ouvertes-2024",
-    title: "Journée Portes Ouvertes 2024 : Un Grand Succès !",
-    date: "15 Mai 2024",
+    slug: "visite-musee-prophete",
+    title: "Visite Inspirante au Musée du Prophète (PSL) à Dakar",
+    date: "18 Juillet 2024",
     imageUrlId: "blog-1",
     excerpt:
-      "Retour en images sur notre journée portes ouvertes qui a rassemblé parents, élèves et futurs membres de notre communauté.",
+      "Visite du musée prophète Mouhamed pal de Dakar",
     content: `
-      <p>La journée portes ouvertes de cette année a été une magnifique occasion de rencontre et de partage. Nous avons eu le plaisir d'accueillir de nombreuses familles venues découvrir notre institut, nos programmes et notre équipe pédagogique.</p>
-      <p>Les visiteurs ont pu assister à des présentations de nos différentes formations, participer à des ateliers interactifs et échanger avec nos enseignants dans une atmosphère conviviale. Les sourires sur les visages des enfants et l'intérêt manifesté par les parents ont été notre plus belle récompense.</p>
-      <p>Nous remercions chaleureusement tous les participants, ainsi que nos élèves et notre personnel pour leur implication dans la réussite de cet événement. C'est ensemble que nous construisons une communauté éducative forte et solidaire.</p>
+      <p>Nos élèves ont eu l'immense privilège de visiter le nouveau musée dédié à la vie et à l'héritage du Prophète Mouhamed (PSL) à Dakar. Une journée riche en apprentissages et en émotions.</p>
+      <p>À travers des expositions immersives et des reconstitutions détaillées, les enfants ont pu voyager dans le temps pour mieux comprendre l'histoire de l'Islam et la vie exemplaire de notre Prophète. Cette sortie éducative a renforcé leur foi et leur a offert une perspective unique sur les valeurs de paix, de savoir et de miséricorde qui sont au cœur de notre religion.</p>
+      <p>Nous sommes convaincus que de telles expériences sont essentielles pour former des esprits éclairés et des cœurs attachés à leur identité spirituelle.</p>
     `,
   },
   {
