@@ -68,52 +68,6 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
-
-      <section className="bg-muted py-16 md:py-24">
-        <div className="container mx-auto">
-          <div className="text-center">
-            <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
-              Notre Équipe Pédagogique
-            </h2>
-            <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
-              Des éducateurs passionnés et dévoués, engagés pour la réussite de
-              chaque élève.
-            </p>
-          </div>
-          <div className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
-            {TEAM_MEMBERS.map((member) => {
-              const memberImage = PlaceHolderImages.find(
-                (img) => img.id === member.photoUrlId
-              );
-              return (
-                <Card key={member.id} className="text-center">
-                  <CardHeader>
-                    <Avatar className="mx-auto h-24 w-24">
-                      {memberImage && (
-                        <AvatarImage
-                          src={memberImage.imageUrl}
-                          alt={member.name}
-                          data-ai-hint={memberImage.imageHint}
-                        />
-                      )}
-                      <AvatarFallback>
-                        {member.name.charAt(0)}
-                      </AvatarFallback>
-                    </Avatar>
-                  </CardHeader>
-                  <CardContent>
-                    <CardTitle className="text-lg">{member.name}</CardTitle>
-                    <p className="text-sm text-primary">{member.title}</p>
-                    <p className="mt-2 text-xs text-muted-foreground">
-                      {member.bio}
-                    </p>
-                  </CardContent>
-                </Card>
-              );
-            })}
-          </div>
-        </div>
-      </section>
     </>
   );
 }
