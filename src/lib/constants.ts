@@ -83,7 +83,7 @@ export const BLOG_POSTS = [
   {
     slug: "concours-recitation-coran",
     title: "Conférence Annuel de Récitation du Coran",
-    date: "10 Avril 2024",
+    date: "20 Juin 2025",
     imageUrlId: "blog-3",
     excerpt:
       "L’Institut a tenu sa Conférence annuelle de récitation du Coran, un moment spirituel fort marqué par la beauté des voix, la ferveur des élèves et la fierté des parents. Une occasion de célébrer la mémorisation, la maîtrise et l’amour du Livre Saint.",
