@@ -60,7 +60,7 @@ export const BLOG_POSTS = [
     date: "18 Juillet 2024",
     imageUrlId: "blog-1",
     excerpt:
-      "Visite du musée prophète Mouhamed pal de Dakar",
+      "Les élèves de l’Institut ont eu l’honneur de visiter le Musée du Prophète Mouhamed (PSL) au Parc de Dakar, une expérience unique qui a renforcé leur foi et enrichi leurs connaissances sur la vie et le message du Messager d’Allah (PSL).",
     content: `
       <p>Nos élèves ont eu l'immense privilège de visiter le nouveau musée dédié à la vie et à l'héritage du Prophète Mouhamed (PSL) à Dakar. Une journée riche en apprentissages et en émotions.</p>
       <p>À travers des expositions immersives et des reconstitutions détaillées, les enfants ont pu voyager dans le temps pour mieux comprendre l'histoire de l'Islam et la vie exemplaire de notre Prophète. Cette sortie éducative a renforcé leur foi et leur a offert une perspective unique sur les valeurs de paix, de savoir et de miséricorde qui sont au cœur de notre religion.</p>
