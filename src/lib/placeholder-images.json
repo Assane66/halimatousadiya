@@ -57,9 +57,9 @@
     },
     {
       "id": "blog-2",
-      "description": "Students receiving awards",
-      "imageUrl": "https://picsum.photos/seed/blog2/400/225",
-      "imageHint": "student awards"
+      "description": "Students during Daara Vacances",
+      "imageUrl": "https://res.cloudinary.com/dm6yuokre/image/upload/v1757731381/IMG-20250913-WA0050_uoz5os.jpg",
+      "imageHint": "students learning"
     },
     {
       "id": "blog-3",
