@@ -43,11 +43,7 @@ export default function AboutPage() {
                   Notre Histoire
                 </h2>
                 <p className="text-muted-foreground">
-                  L'Institut Islamique Yaye Halimatou Saadiya a été fondé avec la
-                  vision de créer un pôle d'excellence éducative à Tivaouane
-                  Peulh. Nommé en l'honneur d'une figure maternelle inspirante,
-                  notre institut s'est engagé dès le premier jour à cultiver le
-                  savoir et la piété chez les jeunes générations.
+                  L’Institut Islamique Yaye Halimatou Saadiya est né d’une ambition noble : ériger à Tivaouane Peulh un pôle d’excellence éducative et spirituelle, au service des générations présentes et futures. Portant le nom d’une figure maternelle dont la sagesse et la piété demeurent une source d’inspiration, notre institut incarne l’héritage d’un amour pour le savoir, la foi et le service de la communauté. Depuis sa fondation, nous travaillons avec constance et dévouement pour offrir à chaque élève un environnement où l’apprentissage rime avec épanouissement, et où l’éducation s’élève au rang de mission sacrée.
                 </p>
               </div>
               <div className="space-y-2">
