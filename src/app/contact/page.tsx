@@ -58,20 +58,6 @@ export default function ContactPage() {
                 </div>
               </div>
             </div>
-            <div>
-              <h2 className="text-2xl font-bold">Plan d'Accès</h2>
-              <div className="mt-4 overflow-hidden rounded-lg">
-                <iframe
-                  src={CONTACT_INFO.mapEmbedUrl}
-                  width="100%"
-                  height="350"
-                  style={{ border: 0 }}
-                  allowFullScreen={false}
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                ></iframe>
-              </div>
-            </div>
           </div>
           <div>
             <ContactForm />
