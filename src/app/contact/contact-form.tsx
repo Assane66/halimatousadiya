@@ -60,7 +60,7 @@ ${message}
     `;
 
     const encodedMessage = encodeURIComponent(whatsappMessage.trim());
-    const whatsappUrl = `https://wa.me/221784513633?text=${encodedMessage}`;
+    const whatsappUrl = `https://wa.me/221786881105?text=${encodedMessage}`;
 
     window.open(whatsappUrl, "_blank");
     
