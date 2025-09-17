@@ -51,13 +51,7 @@ export default function AboutPage() {
                   Mission et Valeurs
                 </h2>
                 <p className="text-muted-foreground">
-                  Notre mission est de fournir une éducation holistique qui
-                  équilibre parfaitement les sciences islamiques et les matières
-                  académiques. Nous nous efforçons de former des individus
-                  dotés d'un caractère islamique solide, d'un esprit critique
-                  aiguisé et d'un sens profond de la responsabilité sociale. Nos
-                  valeurs de foi, de respect, d'intégrité et de service à la
-                  communauté sont au cœur de tout ce que nous faisons.
+                  Notre mission va bien au-delà de la transmission des connaissances : nous aspirons à former des hommes et des femmes équilibrés, éclairés et engagés, capables d’unir la profondeur des sciences islamiques à la rigueur des matières académiques modernes. Nous croyons qu’une éducation réussie doit cultiver à la fois la foi et la raison, pour forger des esprits critiques, des cœurs sincères et des citoyens conscients de leurs responsabilités envers Allah, leur famille et leur société. Nos valeurs sont les piliers de notre action : La foi, comme lumière qui guide nos pas. Le respect, fondement de la vie en communauté et de la fraternité. L’intégrité, qui assure la droiture dans les choix et les actes. Le service, par lequel nous contribuons au bien-être de la Oumma et de la société. À travers ces principes, l’Institut Yaye Halimatou Saadiya s’engage à préparer une génération capable de relever les défis du monde moderne tout en préservant son identité et ses racines spirituelles.
                 </p>
               </div>
             </div>
