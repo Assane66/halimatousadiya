@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
 import { BLOG_POSTS, NAV_LINKS, PROGRAMS } from '@/lib/constants';
 
-const BASE_URL = 'https://i-i-y-h-s.app/';
+const BASE_URL = 'https://yayehalimatousaadiya.com/';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticPages = NAV_LINKS.map((link) => ({
