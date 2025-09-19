@@ -4,8 +4,9 @@ export const SITE_TAGLINE = "Éclairer les esprits, nourrir les âmes.";
 export const SITE_DESCRIPTION =
   "Site web de l'Institut Islamique Yaye Halimatou Saadiya à Tivaouane Peulh. Nous offrons une éducation islamique et académique de qualité.";
 export const CONTACT_INFO = {
-  phone1: "77 446 94 15",
-  phone2: "70 841 22 46",
+  phone1: "76 446 94 15",
+  phone2: "70 841 21 46",
+  phone3: "77 241 01 16",
   email: "instituthalimatousaadiya17@gmail.com",
   address: "Tivaouane Peulh, Apix Îlot 1.",
   fullAddress: "Tivaouane Peulh, Apix Îlot 1, Sénégal",

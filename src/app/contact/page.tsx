@@ -38,6 +38,9 @@ export default function ContactPage() {
                     <p className="text-muted-foreground">
                       {CONTACT_INFO.phone2}
                     </p>
+                    <p className="text-muted-foreground">
+                      {CONTACT_INFO.phone3}
+                    </p>
                   </div>
                 </div>
                 <div className="flex items-start">

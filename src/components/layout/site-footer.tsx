@@ -41,7 +41,7 @@ export function SiteFooter() {
             <li className="flex items-center gap-2">
               <Phone size={16} className="text-primary" />
               <span>
-                {CONTACT_INFO.phone1} / {CONTACT_INFO.phone2}
+                {CONTACT_INFO.phone1} / {CONTACT_INFO.phone2} / {CONTACT_INFO.phone3}
               </span>
             </li>
             <li className="flex items-center gap-2">
