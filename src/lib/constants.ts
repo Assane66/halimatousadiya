@@ -25,10 +25,10 @@ export const NAV_LINKS = [
 
 export const ADMIN_NAV_LINKS = [
   { href: "/admin/dashboard", label: "Tableau de Bord" },
+  { href: "/admin/annees-scolaires", label: "Années Scolaires" },
   { href: "/admin/classes", label: "Classes" },
   { href: "/admin/eleves", label: "Élèves" },
   { href: "/admin/paiements", label: "Paiements" },
-  { href: "/admin/annees-scolaires", label: "Années Scolaires" },
 ];
 
 export const TEAM_MEMBERS = [
