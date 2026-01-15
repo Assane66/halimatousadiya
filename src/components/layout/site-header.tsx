@@ -15,11 +15,19 @@ import {
 import { NAV_LINKS, CONTACT_INFO } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { Logo } from "@/components/logo";
 
 export function SiteHeader() {
-  const publicNavLinks = NAV_LINKS.filter(link => !link.href.startsWith('/admin'));
+  const publicNavLinks = NAV_LINKS.filter(
+    (link) => !link.href.startsWith("/admin")
+  );
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -91,12 +99,12 @@ export function SiteHeader() {
           </nav>
           <div className="hidden items-center gap-2 md:flex">
             <Button asChild className="" size="lg">
-                <Link href="/contact">S'INSCRIRE</Link>
+              <Link href="/contact">S'INSCRIRE</Link>
             </Button>
             <Button asChild variant="ghost" size="icon">
-                <Link href="/admin/login" aria-label="Espace Administration">
-                    <LogIn className="h-5 w-5" />
-                </Link>
+              <Link href="/admin/login" aria-label="Espace Administration">
+                <LogIn className="h-5 w-5" />
+              </Link>
             </Button>
           </div>
 
@@ -110,7 +118,9 @@ export function SiteHeader() {
 }
 
 function MobileNav() {
-    const publicNavLinks = NAV_LINKS.filter(link => !link.href.startsWith('/admin'));
+  const publicNavLinks = NAV_LINKS.filter(
+    (link) => !link.href.startsWith("/admin")
+  );
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -120,9 +130,12 @@ function MobileNav() {
         </Button>
       </SheetTrigger>
       <SheetContent side="left">
-        <div className="p-4">
-          <Logo />
-        </div>
+        <SheetHeader>
+          <div className="p-4">
+            <Logo />
+          </div>
+          <SheetTitle className="sr-only">Menu Principal</SheetTitle>
+        </SheetHeader>
         <div className="flex flex-col space-y-4 p-4">
           {publicNavLinks.map((link) => (
             <Link
@@ -133,17 +146,17 @@ function MobileNav() {
               {link.label}
             </Link>
           ))}
-           <Button asChild className="mt-4" size="lg">
+          <Button asChild className="mt-4" size="lg">
             <Link href="/contact">S'INSCRIRE</Link>
           </Button>
         </div>
-         <div className="absolute bottom-4 left-4 right-4">
-            <Button asChild variant="outline" className="w-full">
-                <Link href="/admin/login">
-                    <LogIn className="mr-2 h-4 w-4" />
-                    Espace Admin
-                </Link>
-            </Button>
+        <div className="absolute bottom-4 left-4 right-4">
+          <Button asChild variant="outline" className="w-full">
+            <Link href="/admin/login">
+              <LogIn className="mr-2 h-4 w-4" />
+              Espace Admin
+            </Link>
+          </Button>
         </div>
       </SheetContent>
     </Sheet>
