@@ -18,7 +18,11 @@ type ClassPayload = {
 
 export async function createClass(payload: ClassPayload): Promise<FormState> {
   try {
-    await firestore.collection('classes').add(payload);
+    const docRef = firestore.collection('classes').doc();
+    await docRef.set({
+      ...payload,
+      id: docRef.id,
+    });
     revalidatePath('/admin/classes');
     return { success: true, message: 'Classe créée avec succès.' };
   } catch (error) {
@@ -27,7 +31,7 @@ export async function createClass(payload: ClassPayload): Promise<FormState> {
   }
 }
 
-export async function updateClass(id: string, payload: ClassPayload): Promise<FormState> {
+export async function updateClass(id: string, payload: Partial<ClassPayload>): Promise<FormState> {
   try {
     await firestore.collection('classes').doc(id).update(payload);
     revalidatePath('/admin/classes');

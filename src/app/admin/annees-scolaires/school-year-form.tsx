@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -24,61 +24,42 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
-import type { Class } from './types';
-import { createClass, updateClass } from './actions';
+import type { SchoolYear } from './types';
+import { createSchoolYear, updateSchoolYear } from './actions';
 
 const formSchema = z.object({
-  name: z.string().min(1, 'Le nom est requis.'),
-  level: z.string().min(1, 'Le niveau est requis.'),
+  name: z.string().min(4, "Le nom doit contenir au moins 4 caractères, ex: '2024-2025'."),
 });
 
-interface ClassFormProps {
+interface SchoolYearFormProps {
   isOpen: boolean;
   onClose: (shouldReload: boolean) => void;
-  schoolYearId: string;
-  classData?: Class | null;
+  schoolYearData?: SchoolYear | null;
 }
 
-export function ClassForm({ isOpen, onClose, schoolYearId, classData }: ClassFormProps) {
+export function SchoolYearForm({ isOpen, onClose, schoolYearData }: SchoolYearFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
-  const isEditing = !!classData;
+  const isEditing = !!schoolYearData;
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: classData?.name || '',
-      level: classData?.level || '',
+      name: schoolYearData?.name || '',
     },
   });
-
-  useEffect(() => {
-    if (classData) {
-      form.reset({
-        name: classData.name,
-        level: classData.level,
-      });
-    } else {
-      form.reset({
-        name: '',
-        level: '',
-      });
-    }
-  }, [classData, form]);
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setIsSubmitting(true);
     
-    const payload = { ...values, schoolYearId };
-    
     const result = isEditing
-      ? await updateClass(classData.id, payload)
-      : await createClass(payload);
+      ? await updateSchoolYear(schoolYearData.id, values)
+      : await createSchoolYear(values);
 
     if (result.success) {
       toast({
-        title: isEditing ? 'Classe modifiée' : 'Classe créée',
-        description: `La classe "${values.name}" a été ${isEditing ? 'mise à jour' : 'créée'}.`,
+        title: isEditing ? 'Année scolaire modifiée' : 'Année scolaire créée',
+        description: `L'année "${values.name}" a été ${isEditing ? 'mise à jour' : 'créée'}.`,
       });
       onClose(true);
     } else {
@@ -95,9 +76,9 @@ export function ClassForm({ isOpen, onClose, schoolYearId, classData }: ClassFor
     <Dialog open={isOpen} onOpenChange={() => onClose(false)}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{isEditing ? 'Modifier la classe' : 'Ajouter une classe'}</DialogTitle>
+          <DialogTitle>{isEditing ? 'Modifier l\'année scolaire' : 'Ajouter une année scolaire'}</DialogTitle>
           <DialogDescription>
-            Remplissez les détails de la classe ci-dessous.
+            Utilisez un format comme "2024-2025".
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -107,22 +88,9 @@ export function ClassForm({ isOpen, onClose, schoolYearId, classData }: ClassFor
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Nom de la classe</FormLabel>
+                  <FormLabel>Nom de l'année scolaire</FormLabel>
                   <FormControl>
-                    <Input placeholder="Ex: 6ème A" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="level"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Niveau</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Ex: 6ème" {...field} />
+                    <Input placeholder="Ex: 2024-2025" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

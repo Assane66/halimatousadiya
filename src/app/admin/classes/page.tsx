@@ -1,57 +1,86 @@
 
 'use client';
 
-import { useEffect, useState } from 'react';
-import { collection, getDocs, query, where } from 'firebase/firestore';
+import { useEffect, useState, useCallback } from 'react';
+import { collection, getDocs, query, where, orderBy } from 'firebase/firestore';
 import { useFirestore } from '@/firebase';
 import { Button } from '@/components/ui/button';
 import { PageHeader } from '@/components/page-header';
 import { ClassList } from './class-list';
 import { ClassForm } from './class-form';
 import type { Class, SchoolYear } from './types';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Terminal } from 'lucide-react';
+import Link from 'next/link';
+
 
 export default function ClassesPage() {
   const [classes, setClasses] = useState<Class[]>([]);
   const [schoolYears, setSchoolYears] = useState<SchoolYear[]>([]);
   const [activeSchoolYear, setActiveSchoolYear] = useState<SchoolYear | null>(null);
+  const [selectedSchoolYearId, setSelectedSchoolYearId] = useState<string>('');
+  
   const [isLoading, setIsLoading] = useState(true);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [selectedClass, setSelectedClass] = useState<Class | null>(null);
   const firestore = useFirestore();
 
-  const fetchData = async () => {
-    setIsLoading(true);
+  const fetchSchoolYears = useCallback(async () => {
     try {
       const schoolYearsCollection = collection(firestore, 'school_years');
-      const activeYearQuery = query(schoolYearsCollection, where('isActive', '==', true));
-      const allYearsSnapshot = await getDocs(schoolYearsCollection);
-      const activeYearSnapshot = await getDocs(activeYearQuery);
+      const q = query(schoolYearsCollection, orderBy('name', 'desc'));
+      const yearsSnapshot = await getDocs(q);
+      const yearsData = yearsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as SchoolYear));
+      setSchoolYears(yearsData);
 
-      const allYears = allYearsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as SchoolYear));
-      setSchoolYears(allYears);
-
-      if (!activeYearSnapshot.empty) {
-        const activeYear = { id: activeYearSnapshot.docs[0].id, ...activeYearSnapshot.docs[0].data() } as SchoolYear;
+      const activeYear = yearsData.find(y => y.isActive);
+      if (activeYear) {
         setActiveSchoolYear(activeYear);
-        
+        setSelectedSchoolYearId(activeYear.id);
+      } else if (yearsData.length > 0) {
+        // Fallback to the most recent year if none is active
+        setSelectedSchoolYearId(yearsData[0].id);
+      }
+
+    } catch (error) {
+      console.error("Erreur de chargement des années scolaires:", error);
+    }
+  }, [firestore]);
+
+
+  const fetchClasses = useCallback(async () => {
+    if (!selectedSchoolYearId) {
+        setClasses([]);
+        return;
+    };
+    setIsLoading(true);
+    try {
         const classesCollection = collection(firestore, 'classes');
-        const classesQuery = query(classesCollection, where('schoolYearId', '==', activeYear.id));
+        const classesQuery = query(classesCollection, where('schoolYearId', '==', selectedSchoolYearId));
         const classesSnapshot = await getDocs(classesQuery);
         const classesData = classesSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Class));
         setClasses(classesData);
-      } else {
-        setClasses([]);
-        setActiveSchoolYear(null);
-      }
     } catch (error) {
-      console.error("Erreur de chargement des données:", error);
+      console.error("Erreur de chargement des classes:", error);
     }
     setIsLoading(false);
-  };
+  }, [firestore, selectedSchoolYearId]);
+
 
   useEffect(() => {
-    fetchData();
-  }, [firestore]);
+    fetchSchoolYears();
+  }, [fetchSchoolYears]);
+
+  useEffect(() => {
+    fetchClasses();
+  }, [fetchClasses]);
 
   const handleAddClass = () => {
     setSelectedClass(null);
@@ -66,43 +95,65 @@ export default function ClassesPage() {
   const handleFormClose = (shouldReload: boolean) => {
     setIsFormOpen(false);
     if (shouldReload) {
-      fetchData();
+      fetchClasses();
     }
   };
+
+  const currentSchoolYear = schoolYears.find(sy => sy.id === selectedSchoolYearId);
 
   return (
     <div>
       <PageHeader
         title="Gestion des Classes"
-        subtitle={`Année scolaire active : ${activeSchoolYear?.name || 'Aucune'}`}
+        subtitle={`Année scolaire : ${currentSchoolYear?.name || 'Aucune'}`}
       >
-         <Button onClick={handleAddClass} disabled={!activeSchoolYear}>
-            Ajouter une classe
-        </Button>
+        <div className="flex items-center gap-4">
+            <Select
+                value={selectedSchoolYearId}
+                onValueChange={setSelectedSchoolYearId}
+            >
+                <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder="Changer d'année" />
+                </SelectTrigger>
+                <SelectContent>
+                    {schoolYears.map(year => (
+                        <SelectItem key={year.id} value={year.id}>
+                            {year.name} {year.isActive && '(Active)'}
+                        </SelectItem>
+                    ))}
+                </SelectContent>
+            </Select>
+            <Button onClick={handleAddClass} disabled={!selectedSchoolYearId}>
+                Ajouter une classe
+            </Button>
+        </div>
       </PageHeader>
       
       <div className="p-4">
-        {!activeSchoolYear && !isLoading && (
-            <div className="text-center text-muted-foreground p-8 bg-muted rounded-lg">
-                <p>Aucune année scolaire n'est active.</p>
-                <p>Veuillez activer une année scolaire pour pouvoir gérer les classes.</p>
-            </div>
+        {!selectedSchoolYearId && !isLoading && (
+            <Alert>
+              <Terminal className="h-4 w-4" />
+              <AlertTitle>Aucune année scolaire sélectionnée</AlertTitle>
+              <AlertDescription>
+                Veuillez d'abord <Link href="/admin/annees-scolaires" className="font-bold hover:underline">créer et activer une année scolaire</Link> pour pouvoir gérer les classes.
+              </AlertDescription>
+            </Alert>
         )}
-        {activeSchoolYear && (
+        {selectedSchoolYearId && (
              <ClassList
                 classes={classes}
                 onEdit={handleEditClass}
-                onDelete={fetchData}
+                onDelete={fetchClasses}
                 isLoading={isLoading}
             />
         )}
       </div>
 
-      {isFormOpen && activeSchoolYear && (
+      {isFormOpen && selectedSchoolYearId && (
         <ClassForm
           isOpen={isFormOpen}
           onClose={handleFormClose}
-          schoolYearId={activeSchoolYear.id}
+          schoolYearId={selectedSchoolYearId}
           classData={selectedClass}
         />
       )}
