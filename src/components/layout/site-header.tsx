@@ -9,6 +9,7 @@ import {
   Instagram,
   Linkedin,
   ChevronDown,
+  LogIn,
 } from "lucide-react";
 
 import { NAV_LINKS, CONTACT_INFO } from "@/lib/constants";
@@ -88,9 +89,16 @@ export function SiteHeader() {
               </Link>
             ))}
           </nav>
-          <Button asChild className="hidden md:flex" size="lg">
-            <Link href="/contact">S'INSCRIRE</Link>
-          </Button>
+          <div className="hidden items-center gap-2 md:flex">
+            <Button asChild className="" size="lg">
+                <Link href="/contact">S'INSCRIRE</Link>
+            </Button>
+            <Button asChild variant="ghost" size="icon">
+                <Link href="/admin/login" aria-label="Espace Administration">
+                    <LogIn className="h-5 w-5" />
+                </Link>
+            </Button>
+          </div>
 
           <div className="flex items-center gap-2 md:hidden">
             <MobileNav />
@@ -128,6 +136,14 @@ function MobileNav() {
            <Button asChild className="mt-4" size="lg">
             <Link href="/contact">S'INSCRIRE</Link>
           </Button>
+        </div>
+         <div className="absolute bottom-4 left-4 right-4">
+            <Button asChild variant="outline" className="w-full">
+                <Link href="/admin/login">
+                    <LogIn className="mr-2 h-4 w-4" />
+                    Espace Admin
+                </Link>
+            </Button>
         </div>
       </SheetContent>
     </Sheet>
