@@ -11,7 +11,8 @@ if (!admin.apps.length) {
             credential: admin.credential.cert(serviceAccount),
         });
     } else {
-        console.warn("Initialisation de l'admin Firebase sans credentials. Les opérations authentifiées échoueront.");
+        console.warn("Initialisation de l'admin Firebase sans credentials de serviceAccount. Tentative avec les credentials par défaut.");
+        // Utilise les credentials par défaut de l'environnement (adapté pour App Hosting)
         admin.initializeApp();
     }
 }
