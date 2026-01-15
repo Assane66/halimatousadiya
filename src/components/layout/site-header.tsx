@@ -18,6 +18,8 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Logo } from "@/components/logo";
 
 export function SiteHeader() {
+  const publicNavLinks = NAV_LINKS.filter(link => !link.href.startsWith('/admin'));
+
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       {/* Top Bar */}
@@ -76,7 +78,7 @@ export function SiteHeader() {
 
         <div className="flex flex-1 items-center justify-end space-x-8">
           <nav className="hidden items-center space-x-6 text-sm font-medium md:flex">
-            {NAV_LINKS.map((link) => (
+            {publicNavLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
@@ -100,6 +102,7 @@ export function SiteHeader() {
 }
 
 function MobileNav() {
+    const publicNavLinks = NAV_LINKS.filter(link => !link.href.startsWith('/admin'));
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -113,7 +116,7 @@ function MobileNav() {
           <Logo />
         </div>
         <div className="flex flex-col space-y-4 p-4">
-          {NAV_LINKS.map((link) => (
+          {publicNavLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
