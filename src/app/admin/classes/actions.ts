@@ -49,4 +49,3 @@ export async function deleteClass(id: string): Promise<FormState> {
     return { success: false, message: 'Une erreur est survenue.' };
   }
 }
-

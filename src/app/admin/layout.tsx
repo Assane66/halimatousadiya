@@ -35,14 +35,15 @@ export default function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { user, loading, error } = useUser();
+  const { user, isUserLoading } = useUser();
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
-    if (!loading && !user) {
+    if (!isUserLoading && !user && pathname !== '/admin/login') {
       router.push('/admin/login');
     }
-  }, [user, loading, router]);
+  }, [user, isUserLoading, router, pathname]);
 
   const handleSignOut = async () => {
     const { auth } = initializeFirebase();
@@ -54,18 +55,18 @@ export default function AdminLayout({
     }
   };
 
-  if (loading || !user) {
+  if (pathname === '/admin/login') {
+      return (
+        <FirebaseProvider>
+          <FirebaseClientProvider>{children}</FirebaseClientProvider>
+        </FirebaseProvider>
+      );
+  }
+
+  if (isUserLoading || !user) {
     return (
       <div className="flex h-screen items-center justify-center">
         <p>Loading...</p>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="flex h-screen items-center justify-center">
-        <p>Error: {error.message}</p>
       </div>
     );
   }
@@ -92,7 +93,7 @@ export default function AdminLayout({
                   </SidebarMenu>
                 </SidebarGroup>
               </SidebarContent>
-              <div className="p-4">
+              <div className="mt-auto p-4">
                 <Button variant="outline" className="w-full" onClick={handleSignOut}>
                   <LogOut className="mr-2 h-4 w-4" />
                   Déconnexion
@@ -100,18 +101,17 @@ export default function AdminLayout({
               </div>
             </Sidebar>
             <SidebarInset>
-              <header className="flex h-14 items-center justify-between border-b bg-background px-4">
+              <header className="flex h-14 items-center justify-between border-b bg-background px-4 md:justify-end">
                 <div className="flex items-center gap-2 md:hidden">
                   <SidebarTrigger />
-                  <Logo />
                 </div>
-                <div className="ml-auto">
+                <div>
                   <p className="text-sm text-muted-foreground">
                     {user.email}
                   </p>
                 </div>
               </header>
-              <main className="flex-1 p-4 md:p-6">{children}</main>
+              <main className="flex-1">{children}</main>
             </SidebarInset>
           </div>
         </SidebarProvider>
@@ -128,7 +128,7 @@ function AdminSidebarMenuButton({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const isActive = pathname === href;
+  const isActive = pathname.startsWith(href);
   return (
     <Button
       asChild

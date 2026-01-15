@@ -3,19 +3,24 @@ import { cn } from "@/lib/utils";
 interface PageHeaderProps {
   title: string;
   subtitle: string;
-  className?: string;
+  children?: React.ReactNode;
 }
 
-export function PageHeader({ title, subtitle, className }: PageHeaderProps) {
+export function PageHeader({ title, subtitle, children }: PageHeaderProps) {
   return (
-    <section className={cn("bg-muted py-12 md:py-16", className)}>
-      <div className="container mx-auto text-center">
-        <h1 className="text-3xl font-bold tracking-tight md:text-5xl">
-          {title}
-        </h1>
-        <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
-          {subtitle}
-        </p>
+    <section className="bg-muted py-8">
+      <div className="container mx-auto">
+        <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
+            <div className="space-y-1">
+                <h1 className="text-2xl font-bold tracking-tight md:text-3xl">
+                {title}
+                </h1>
+                <p className="max-w-2xl text-base text-muted-foreground">
+                {subtitle}
+                </p>
+            </div>
+            {children && <div>{children}</div>}
+        </div>
       </div>
     </section>
   );
