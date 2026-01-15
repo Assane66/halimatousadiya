@@ -8,7 +8,7 @@ import {
   setPersistence,
   browserLocalPersistence,
 } from 'firebase/auth';
-import { initializeFirebase, FirebaseProvider, useAuth } from '@/firebase';
+import { useAuth } from '@/firebase';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -23,7 +23,7 @@ import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { Logo } from '@/components/logo';
 
-function LoginForm() {
+export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -95,16 +95,5 @@ function LoginForm() {
         </form>
       </Card>
     </div>
-  );
-}
-
-
-export default function LoginPage() {
-  const { firebaseApp, auth, firestore } = initializeFirebase();
-
-  return (
-    <FirebaseProvider firebaseApp={firebaseApp} auth={auth} firestore={firestore}>
-        <LoginForm />
-    </FirebaseProvider>
   );
 }
