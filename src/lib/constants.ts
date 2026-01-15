@@ -21,7 +21,6 @@ export const NAV_LINKS = [
   { href: "/actualites", label: "Évènements" },
   { href: "/galerie", label: "Galerie" },
   { href: "/contact", label: "Contact" },
-  { href: "/admin/dashboard", label: "Admin"},
 ];
 
 export const ADMIN_NAV_LINKS = [
