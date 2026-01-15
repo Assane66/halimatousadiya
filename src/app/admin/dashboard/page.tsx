@@ -30,6 +30,7 @@ interface Student {
     id: string;
     firstName: string;
     lastName: string;
+    isActive: boolean;
 }
 
 export default function AdminDashboardPage() {
@@ -44,6 +45,7 @@ export default function AdminDashboardPage() {
 
   useEffect(() => {
     async function fetchData() {
+      if (!firestore) return;
       setIsLoading(true);
       try {
         // 1. Find active school year
