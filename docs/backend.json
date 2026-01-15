@@ -1,0 +1,283 @@
+{
+  "entities": {
+    "User": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "User",
+      "type": "object",
+      "description": "Represents an administrative user account for managing the school platform.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the user."
+        },
+        "email": {
+          "type": "string",
+          "description": "Email address of the user.",
+          "format": "email"
+        },
+        "passwordHash": {
+          "type": "string",
+          "description": "Hashed password of the user. **NOTE:** This should only store the hash, not the actual password.  Use a secure hashing algorithm."
+        },
+        "role": {
+          "type": "string",
+          "description": "Role of the user (e.g., Admin, Staff)."
+        }
+      },
+      "required": [
+        "id",
+        "email",
+        "passwordHash",
+        "role"
+      ]
+    },
+    "Class": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Class",
+      "type": "object",
+      "description": "Represents a class within the school.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the class."
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the class (e.g., 6e A, Terminale S)."
+        },
+        "level": {
+          "type": "string",
+          "description": "Level of the class (e.g., 6e, Terminale)."
+        },
+        "schoolYearId": {
+          "type": "string",
+          "description": "Reference to SchoolYear. (Relationship: SchoolYear 1:N Class)"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "level",
+        "schoolYearId"
+      ]
+    },
+    "Student": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Student",
+      "type": "object",
+      "description": "Represents a student in the school.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the student."
+        },
+        "firstName": {
+          "type": "string",
+          "description": "First name of the student."
+        },
+        "lastName": {
+          "type": "string",
+          "description": "Last name of the student."
+        },
+        "dateOfBirth": {
+          "type": "string",
+          "description": "Date of birth of the student.",
+          "format": "date-time"
+        },
+        "gender": {
+          "type": "string",
+          "description": "Gender of the student."
+        },
+        "classId": {
+          "type": "string",
+          "description": "Reference to Class. (Relationship: Class 1:N Student)"
+        },
+        "matriculeNumber": {
+          "type": "string",
+          "description": "Automatic matricule number."
+        },
+        "parentPhoneNumber": {
+          "type": "string",
+          "description": "Parent phone number."
+        },
+        "address": {
+          "type": "string",
+          "description": "Address of the student."
+        },
+        "isActive": {
+          "type": "boolean",
+          "description": "Indicates if student is still active."
+        }
+      },
+      "required": [
+        "id",
+        "firstName",
+        "lastName",
+        "dateOfBirth",
+        "gender",
+        "classId",
+        "matriculeNumber",
+        "parentPhoneNumber",
+        "address",
+        "isActive"
+      ]
+    },
+    "Payment": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Payment",
+      "type": "object",
+      "description": "Represents a payment made by a student.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the payment."
+        },
+        "studentId": {
+          "type": "string",
+          "description": "Reference to Student. (Relationship: Student 1:N Payment)"
+        },
+        "amount": {
+          "type": "number",
+          "description": "Amount of the payment."
+        },
+        "type": {
+          "type": "string",
+          "description": "Type of payment (e.g., Inscription, Mensualite)."
+        },
+        "date": {
+          "type": "string",
+          "description": "Date of the payment.",
+          "format": "date-time"
+        },
+        "schoolYearId": {
+          "type": "string",
+          "description": "Reference to SchoolYear. (Relationship: SchoolYear 1:N Payment)"
+        }
+      },
+      "required": [
+        "id",
+        "studentId",
+        "amount",
+        "type",
+        "date",
+        "schoolYearId"
+      ]
+    },
+    "SchoolYear": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "SchoolYear",
+      "type": "object",
+      "description": "Represents a school year.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the school year."
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the school year (e.g., 2023-2024)."
+        },
+        "isActive": {
+          "type": "boolean",
+          "description": "Indicates if the school year is active."
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "isActive"
+      ]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password",
+      "anonymous"
+    ]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "/roles_admin/{userId}",
+        "definition": {
+          "entityName": "User",
+          "schema": {
+            "$ref": "#/backend/entities/User"
+          },
+          "description": "Collection to store admin users. Document existence determines admin privileges.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier of the admin user."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/classes/{classId}",
+        "definition": {
+          "entityName": "Class",
+          "schema": {
+            "$ref": "#/backend/entities/Class"
+          },
+          "description": "Collection to store class information.",
+          "params": [
+            {
+              "name": "classId",
+              "description": "The unique identifier of the class."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/students/{studentId}",
+        "definition": {
+          "entityName": "Student",
+          "schema": {
+            "$ref": "#/backend/entities/Student"
+          },
+          "description": "Collection to store student information.",
+          "params": [
+            {
+              "name": "studentId",
+              "description": "The unique identifier of the student."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/payments/{paymentId}",
+        "definition": {
+          "entityName": "Payment",
+          "schema": {
+            "$ref": "#/backend/entities/Payment"
+          },
+          "description": "Collection to store payment information.",
+          "params": [
+            {
+              "name": "paymentId",
+              "description": "The unique identifier of the payment."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/school_years/{schoolYearId}",
+        "definition": {
+          "entityName": "SchoolYear",
+          "schema": {
+            "$ref": "#/backend/entities/SchoolYear"
+          },
+          "description": "Collection to store school year information.",
+          "params": [
+            {
+              "name": "schoolYearId",
+              "description": "The unique identifier of the school year."
+            }
+          ]
+        }
+      }
+    ],
+    "reasoning": "The Firestore structure is designed to manage school administration data, including users, classes, students, payments, and school years. The structure prioritizes authorization independence and simplifies security rules by using path-based ownership for private user data and membership maps for collaborative data where applicable. All collections are designed with a homogeneous security posture to ensure consistent access control. The root level collections segregate different types of data to avoid mixing access requirements within the same collection.\n\nAuthorization Independence is achieved by avoiding `get()` calls in security rules. Since all collections in this design are independently secured based on simple auth checks, authorization logic remains clear and debuggable. The use of path-based ownership (`/users/{userId}/...`) and explicit role checks eliminates the need to fetch parent document data for authorization, ensuring that transactions and batch operations remain atomic.\n\nThe structure supports QAPs by segregating data based on access control requirements.  Admin users have unrestricted access to all data. The admin user role is validated via document existence in a dedicated collection (/roles_admin/{uid}). This structure allows for simple and secure `list` operations, as security rules can be applied directly to collection paths without needing to filter based on document content."
+  }
+}

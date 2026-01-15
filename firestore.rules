@@ -1,0 +1,124 @@
+/**
+ * Core Philosophy:
+ * This ruleset enforces a strict Role-Based Access Control (RBAC) model designed for a school administration platform.
+ * All access to the database (read and write) is restricted to authenticated users who have been explicitly granted an administrative role.
+ *
+ * Data Structure:
+ * The data is organized into flat, top-level collections representing core school entities: classes, students, payments, and school years.
+ * A dedicated 'roles_admin' collection serves as the definitive source for user roles, where the existence of a document signifies administrative privileges for that user.
+ *
+ * Key Security Decisions:
+ * - Default Deny: All operations are denied by default. Access is only granted through explicit 'allow' statements.
+ * - Admin-Only Access: There is no public or student-facing access. The entire database is secured for internal administrative use.
+ * - Centralized Role Management: A user's admin status is determined by checking for the existence of their user ID as a document in the '/roles_admin' collection. This is a fast, secure, and easily auditable method.
+ * - No User Data Ownership: Unlike typical user-centric apps, no data is "owned" by a specific user. Instead, all data is owned by the institution and managed collectively by all admins.
+ *
+ * Denormalization for Authorization:
+ * The primary authorization strategy relies on the '/roles_admin' collection. This is a form of denormalization where user roles are stored in a way that is optimized for fast lookups within security rules, avoiding the need for complex queries or joins.
+ *
+ * Structural Segregation:
+ * The data structure is inherently segregated by entity type at the root level (e.g., /classes, /students). This clean separation ensures that security rules for one data type do not unintentionally affect another.
+ */
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ----------------------------------------------------------------------
+    // Helper Functions
+    // ----------------------------------------------------------------------
+
+    /**
+     * Checks if the user is authenticated.
+     */
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    /**
+     * Checks if the authenticated user has an admin role.
+     * The source of truth is the existence of a document in the /roles_admin collection
+     * where the document ID matches the user's UID.
+     */
+    function isAdmin() {
+      return isSignedIn() && exists(/databases/$(database)/documents/roles_admin/$(request.auth.uid));
+    }
+
+    // ----------------------------------------------------------------------
+    // Admin Roles Collection
+    // ----------------------------------------------------------------------
+
+    /**
+     * @description Manages admin user roles. Only existing admins can read or modify this collection.
+     * @path /roles_admin/{userId}
+     * @allow An existing admin (create)s a new document for another user to grant them admin rights.
+     * @deny A non-admin user attempts to (list) the collection to see who the admins are.
+     * @principle Enforces meta-security where only privileged users (admins) can manage the privileges of other users.
+     */
+    match /roles_admin/{userId} {
+      allow get, list: if isAdmin();
+      allow create: if isAdmin() && request.resource.data.id == userId;
+      allow update: if isAdmin() && resource != null && request.resource.data.id == resource.data.id;
+      allow delete: if isAdmin() && resource != null;
+    }
+
+    // ----------------------------------------------------------------------
+    // School Data Collections
+    // ----------------------------------------------------------------------
+
+    /**
+     * @description Manages school classes. Access is restricted to admin users only.
+     * @path /classes/{classId}
+     * @allow An admin user (create)s a new class document.
+     * @deny An authenticated but non-admin user attempts to (get) a class document.
+     * @principle Restricts all data access to users with a verified administrative role.
+     */
+    match /classes/{classId} {
+      allow get, list: if isAdmin();
+      allow create: if isAdmin();
+      allow update: if isAdmin() && resource != null;
+      allow delete: if isAdmin() && resource != null;
+    }
+
+    /**
+     * @description Manages student records. Access is restricted to admin users only.
+     * @path /students/{studentId}
+     * @allow An admin user (update)s an existing student's information.
+     * @deny An anonymous user attempts to (list) all students.
+     * @principle Restricts all data access to users with a verified administrative role.
+     */
+    match /students/{studentId} {
+      allow get, list: if isAdmin();
+      allow create: if isAdmin();
+      allow update: if isAdmin() && resource != null;
+      allow delete: if isAdmin() && resource != null;
+    }
+
+    /**
+     * @description Manages student payment records. Access is restricted to admin users only.
+     * @path /payments/{paymentId}
+     * @allow An admin user (create)s a new payment record for a student.
+     * @deny A non-admin user attempts to (delete) a payment record.
+     * @principle Restricts all data access to users with a verified administrative role.
+     */
+    match /payments/{paymentId} {
+      allow get, list: if isAdmin();
+      allow create: if isAdmin();
+      allow update: if isAdmin() && resource != null;
+      allow delete: if isAdmin() && resource != null;
+    }
+
+    /**
+     * @description Manages school year data. Access is restricted to admin users only.
+     * @path /school_years/{schoolYearId}
+     * @allow An admin user (get)s the details of the active school year.
+     * @deny A non-admin user attempts to (update) a school year to archive it.
+     * @principle Restricts all data access to users with a verified administrative role.
+     */
+    match /school_years/{schoolYearId} {
+      allow get, list: if isAdmin();
+      allow create: if isAdmin();
+      allow update: if isAdmin() && resource != null;
+      allow delete: if isAdmin() && resource != null;
+    }
+  }
+}
