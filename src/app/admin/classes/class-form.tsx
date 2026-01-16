@@ -47,31 +47,26 @@ export function ClassForm({ isOpen, onClose, schoolYearId, classData }: ClassFor
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: classData?.name || '',
-      level: classData?.level || '',
+      name: '',
+      level: '',
     },
   });
-
+  
   useEffect(() => {
-    if (classData) {
-      form.reset({
-        name: classData.name,
-        level: classData.level,
-      });
-    } else {
-      form.reset({
-        name: '',
-        level: '',
-      });
+    if (isOpen) {
+        form.reset({
+            name: classData?.name || '',
+            level: classData?.level || '',
+        });
     }
-  }, [classData, form]);
+  }, [isOpen, classData, form]);
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setIsSubmitting(true);
     
     const payload = { ...values, schoolYearId };
     
-    const result = isEditing
+    const result = isEditing && classData
       ? await updateClass(classData.id, payload)
       : await createClass(payload);
 
@@ -92,7 +87,7 @@ export function ClassForm({ isOpen, onClose, schoolYearId, classData }: ClassFor
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={() => onClose(false)}>
+    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose(false)}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{isEditing ? 'Modifier la classe' : 'Ajouter une classe'}</DialogTitle>

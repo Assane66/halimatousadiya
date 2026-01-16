@@ -58,6 +58,7 @@ export default function ClassesPage() {
   const fetchClasses = useCallback(async () => {
     if (!selectedSchoolYearId) {
         setClasses([]);
+        setIsLoading(false);
         return;
     };
     setIsLoading(true);
@@ -79,8 +80,10 @@ export default function ClassesPage() {
   }, [fetchSchoolYears]);
 
   useEffect(() => {
-    fetchClasses();
-  }, [fetchClasses]);
+    if(selectedSchoolYearId) {
+      fetchClasses();
+    }
+  }, [selectedSchoolYearId, fetchClasses]);
 
   const handleAddClass = () => {
     setSelectedClass(null);
@@ -111,6 +114,7 @@ export default function ClassesPage() {
             <Select
                 value={selectedSchoolYearId}
                 onValueChange={setSelectedSchoolYearId}
+                disabled={schoolYears.length === 0}
             >
                 <SelectTrigger className="w-[180px]">
                     <SelectValue placeholder="Changer d'année" />

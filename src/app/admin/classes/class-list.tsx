@@ -65,7 +65,7 @@ export function ClassList({ classes, onEdit, onDelete, isLoading }: ClassListPro
 
   if (isLoading) {
     return (
-        <div className="space-y-2">
+        <div className="space-y-2 p-4">
             <Skeleton className="h-12 w-full" />
             <Skeleton className="h-12 w-full" />
             <Skeleton className="h-12 w-full" />
@@ -87,8 +87,8 @@ export function ClassList({ classes, onEdit, onDelete, isLoading }: ClassListPro
           <TableBody>
             {classes.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={3} className="text-center">
-                  Aucune classe trouvée.
+                <TableCell colSpan={3} className="h-24 text-center">
+                  Aucune classe trouvée pour cette année scolaire.
                 </TableCell>
               </TableRow>
             ) : (
@@ -126,7 +126,7 @@ export function ClassList({ classes, onEdit, onDelete, isLoading }: ClassListPro
           <AlertDialogHeader>
             <AlertDialogTitle>Êtes-vous sûr de vouloir supprimer cette classe ?</AlertDialogTitle>
             <AlertDialogDescription>
-              Cette action est irréversible et supprimera la classe "{classToDelete?.name}".
+              Cette action est irréversible et supprimera la classe "{classToDelete?.name}". Les élèves inscrits dans cette classe ne seront plus associés.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
