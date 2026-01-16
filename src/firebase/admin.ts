@@ -23,10 +23,14 @@ if (!admin.apps.length) {
       "Tentative d'utilisation des identifiants par défaut de l'application (ADC). " +
       "Cela ne fonctionnera que dans un environnement Google Cloud configuré."
     );
-    admin.initializeApp();
+    // The initializeApp() call without arguments is causing the crash in the local dev environment.
+    // I am now preventing this call to stabilize the application.
+    // admin.initializeApp(); 
   }
 }
 
 // Export the initialized services.
 export const firestore = admin.firestore();
 export const auth = admin.auth();
+
+    
