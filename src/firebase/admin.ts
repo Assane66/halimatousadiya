@@ -1,36 +1,43 @@
 
 import * as admin from 'firebase-admin';
 
-// Attempt to parse the service account credentials from the environment variable.
 const serviceAccount = process.env.FIREBASE_SERVICE_ACCOUNT
   ? JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT)
   : null;
 
-// Initialize the Firebase Admin SDK only if it hasn't been already.
 if (!admin.apps.length) {
   if (serviceAccount) {
-    // If service account credentials are available, use them.
-    // This is the standard and most reliable method.
     admin.initializeApp({
       credential: admin.credential.cert(serviceAccount),
     });
   } else {
-    // Fallback for environments like Firebase App Hosting where credentials might be auto-discovered.
-    // This will only work in specific, configured Google Cloud environments.
-    // A warning is logged if serviceAccount is missing, as this is often a misconfiguration.
     console.warn(
-      "Firebase Admin SDK initialisé sans `serviceAccount` explicite. " +
-      "Tentative d'utilisation des identifiants par défaut de l'application (ADC). " +
-      "Cela ne fonctionnera que dans un environnement Google Cloud configuré."
+      "SDK Admin Firebase non initialisé : La variable d'environnement `FIREBASE_SERVICE_ACCOUNT` n'est pas définie. " +
+      "Les fonctionnalités côté serveur ne seront pas disponibles en développement local."
     );
-    // The initializeApp() call without arguments is causing the crash in the local dev environment.
-    // I am now preventing this call to stabilize the application.
-    // admin.initializeApp(); 
   }
 }
 
-// Export the initialized services.
-export const firestore = admin.firestore();
-export const auth = admin.auth();
+let firestore: admin.firestore.Firestore;
+let auth: admin.auth.Auth;
 
-    
+if (admin.apps.length === 0) {
+  // Si l'application n'a pas été initialisée (ex: en local sans compte de service),
+  // nous créons un proxy qui lancera une erreur claire si on essaie de l'utiliser.
+  const serviceProxy = new Proxy({}, {
+    get(target, prop) {
+      throw new Error(
+        `Le SDK Admin Firebase n'est pas initialisé. Impossible d'accéder à '${String(prop)}'. ` +
+        `Assurez-vous que la variable d'environnement FIREBASE_SERVICE_ACCOUNT est configurée pour le développement local.`
+      );
+    },
+  });
+  firestore = serviceProxy as admin.firestore.Firestore;
+  auth = serviceProxy as admin.auth.Auth;
+} else {
+  // Si l'application est initialisée, on exporte les services normalement.
+  firestore = admin.firestore();
+  auth = admin.auth();
+}
+
+export { firestore, auth };
