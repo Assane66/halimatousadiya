@@ -19,6 +19,16 @@ import {
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Terminal } from 'lucide-react';
 import Link from 'next/link';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 
 export default function ClassesPage() {
@@ -30,6 +40,7 @@ export default function ClassesPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [selectedClass, setSelectedClass] = useState<Class | null>(null);
+  const [isNoYearAlertOpen, setIsNoYearAlertOpen] = useState(false);
   const firestore = useFirestore();
 
   const fetchSchoolYears = useCallback(async () => {
@@ -86,8 +97,12 @@ export default function ClassesPage() {
   }, [selectedSchoolYearId, fetchClasses]);
 
   const handleAddClass = () => {
-    setSelectedClass(null);
-    setIsFormOpen(true);
+    if (!selectedSchoolYearId) {
+      setIsNoYearAlertOpen(true);
+    } else {
+      setSelectedClass(null);
+      setIsFormOpen(true);
+    }
   };
 
   const handleEditClass = (cls: Class) => {
@@ -127,7 +142,7 @@ export default function ClassesPage() {
                     ))}
                 </SelectContent>
             </Select>
-            <Button onClick={handleAddClass} disabled={!selectedSchoolYearId}>
+            <Button onClick={handleAddClass}>
                 Ajouter une classe
             </Button>
         </div>
@@ -161,6 +176,23 @@ export default function ClassesPage() {
           classData={selectedClass}
         />
       )}
+
+      <AlertDialog open={isNoYearAlertOpen} onOpenChange={setIsNoYearAlertOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Aucune année scolaire sélectionnée</AlertDialogTitle>
+            <AlertDialogDescription>
+              Pour ajouter une classe, vous devez d'abord sélectionner une année scolaire dans le menu déroulant. Si la liste est vide, veuillez vous rendre sur la page des années scolaires pour en créer et en activer une.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Annuler</AlertDialogCancel>
+            <AlertDialogAction asChild>
+                <Link href="/admin/annees-scolaires">Gérer les Années Scolaires</Link>
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
