@@ -26,6 +26,7 @@ import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import type { SchoolYear } from './types';
 import { createSchoolYear, updateSchoolYear } from './actions';
+import { useFirestore } from '@/firebase';
 
 const formSchema = z.object({
   name: z.string().min(4, "Le nom doit contenir au moins 4 caractères, ex: '2024-2025'."),
@@ -41,6 +42,7 @@ export function SchoolYearForm({ isOpen, onClose, schoolYearData }: SchoolYearFo
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
   const isEditing = !!schoolYearData;
+  const firestore = useFirestore();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -49,26 +51,20 @@ export function SchoolYearForm({ isOpen, onClose, schoolYearData }: SchoolYearFo
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+  const onSubmit = (values: z.infer<typeof formSchema>) => {
     setIsSubmitting(true);
     
-    const result = isEditing
-      ? await updateSchoolYear(schoolYearData.id, values)
-      : await createSchoolYear(values);
-
-    if (result.success) {
-      toast({
-        title: isEditing ? 'Année scolaire modifiée' : 'Année scolaire créée',
-        description: `L'année "${values.name}" a été ${isEditing ? 'mise à jour' : 'créée'}.`,
-      });
-      onClose(true);
+    if (isEditing && schoolYearData) {
+      updateSchoolYear(firestore, schoolYearData.id, values);
     } else {
-      toast({
-        variant: 'destructive',
-        title: 'Erreur',
-        description: result.message,
-      });
+      createSchoolYear(firestore, values);
     }
+
+    toast({
+      title: isEditing ? 'Année scolaire modifiée' : 'Année scolaire créée',
+      description: `L'année "${values.name}" a été ${isEditing ? 'mise à jour' : 'créée'}.`,
+    });
+    onClose(true);
     setIsSubmitting(false);
   };
 

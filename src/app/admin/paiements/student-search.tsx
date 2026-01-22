@@ -6,6 +6,7 @@ import { Command, CommandInput, CommandItem, CommandList, CommandEmpty } from '@
 import { searchStudents } from './actions';
 import type { Student } from './types';
 import { Card, CardContent } from '@/components/ui/card';
+import { useFirestore } from '@/firebase';
 
 type StudentSearchResult = {
     id: string;
@@ -22,6 +23,7 @@ export function StudentSearch({ onStudentSelect }: StudentSearchProps) {
   const [results, setResults] = useState<StudentSearchResult[]>([]);
   const [selectedStudentDisplay, setSelectedStudentDisplay] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+  const firestore = useFirestore();
 
   const handleSearch = useCallback((term: string) => {
     setSearchTerm(term);
@@ -30,10 +32,10 @@ export function StudentSearch({ onStudentSelect }: StudentSearchProps) {
       return;
     }
     startTransition(async () => {
-      const students = await searchStudents(term);
+      const students = await searchStudents(firestore, term);
       setResults(students);
     });
-  }, []);
+  }, [firestore]);
 
   const handleSelect = (studentResult: StudentSearchResult) => {
     // This is a bit of a hack since searchStudents only returns partial data.

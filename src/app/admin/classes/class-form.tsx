@@ -26,6 +26,7 @@ import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import type { Class } from './types';
 import { createClass, updateClass } from './actions';
+import { useFirestore } from '@/firebase';
 
 const formSchema = z.object({
   name: z.string().min(1, 'Le nom est requis.'),
@@ -43,6 +44,7 @@ export function ClassForm({ isOpen, onClose, schoolYearId, classData }: ClassFor
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
   const isEditing = !!classData;
+  const firestore = useFirestore();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -61,28 +63,22 @@ export function ClassForm({ isOpen, onClose, schoolYearId, classData }: ClassFor
     }
   }, [isOpen, classData, form]);
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+  const onSubmit = (values: z.infer<typeof formSchema>) => {
     setIsSubmitting(true);
     
     const payload = { ...values, schoolYearId };
     
-    const result = isEditing && classData
-      ? await updateClass(classData.id, payload)
-      : await createClass(payload);
-
-    if (result.success) {
-      toast({
-        title: isEditing ? 'Classe modifiée' : 'Classe créée',
-        description: `La classe "${values.name}" a été ${isEditing ? 'mise à jour' : 'créée'}.`,
-      });
-      onClose(true);
+    if (isEditing && classData) {
+      updateClass(firestore, classData.id, payload);
     } else {
-      toast({
-        variant: 'destructive',
-        title: 'Erreur',
-        description: result.message,
-      });
+      createClass(firestore, payload);
     }
+
+    toast({
+      title: isEditing ? 'Classe modifiée' : 'Classe créée',
+      description: `La classe "${values.name}" a été ${isEditing ? 'mise à jour' : 'créée'}.`,
+    });
+    onClose(true);
     setIsSubmitting(false);
   };
 

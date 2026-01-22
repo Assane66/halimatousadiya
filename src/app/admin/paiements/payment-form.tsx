@@ -32,6 +32,7 @@ import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import { useToast } from '@/hooks/use-toast';
 import { createPayment } from './actions';
+import { useFirestore } from '@/firebase';
 
 const formSchema = z.object({
   amount: z.preprocess(
@@ -51,6 +52,7 @@ interface PaymentFormProps {
 export function PaymentForm({ isOpen, onClose, studentId }: PaymentFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
+  const firestore = useFirestore();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -64,7 +66,7 @@ export function PaymentForm({ isOpen, onClose, studentId }: PaymentFormProps) {
     setIsSubmitting(true);
     
     const payload = { ...values, studentId };
-    const result = await createPayment(payload);
+    const result = await createPayment(firestore, payload);
 
     if (result.success) {
       toast({

@@ -34,6 +34,7 @@ import { deleteSchoolYear, setActiveSchoolYear } from './actions';
 import { useToast } from '@/hooks/use-toast';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Badge } from '@/components/ui/badge';
+import { useFirestore } from '@/firebase';
 
 interface SchoolYearListProps {
   schoolYears: SchoolYear[];
@@ -47,27 +48,24 @@ export function SchoolYearList({ schoolYears, onEdit, onDelete, onActivate, isLo
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const [yearToDelete, setYearToDelete] = useState<SchoolYear | null>(null);
   const { toast } = useToast();
+  const firestore = useFirestore();
 
   const openDeleteConfirm = (year: SchoolYear) => {
     setYearToDelete(year);
     setIsAlertOpen(true);
   };
 
-  const handleDelete = async () => {
+  const handleDelete = () => {
     if (!yearToDelete) return;
-    const result = await deleteSchoolYear(yearToDelete.id);
-    if (result.success) {
-      toast({ title: 'Année supprimée', description: `L'année ${yearToDelete.name} a été supprimée.` });
-      onDelete();
-    } else {
-      toast({ variant: 'destructive', title: 'Erreur', description: result.message });
-    }
+    deleteSchoolYear(firestore, yearToDelete.id);
+    toast({ title: 'Année supprimée', description: `L'année ${yearToDelete.name} a été supprimée.` });
+    onDelete();
     setIsAlertOpen(false);
     setYearToDelete(null);
   };
 
   const handleActivate = async (id: string) => {
-    const result = await setActiveSchoolYear(id);
+    const result = await setActiveSchoolYear(firestore, id);
     if (result.success) {
       toast({ title: 'Année activée', description: result.message });
       onActivate();

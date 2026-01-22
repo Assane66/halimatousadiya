@@ -32,6 +32,7 @@ import { useState } from 'react';
 import { deleteClass } from './actions';
 import { useToast } from '@/hooks/use-toast';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useFirestore } from '@/firebase';
 
 interface ClassListProps {
   classes: Class[];
@@ -44,21 +45,18 @@ export function ClassList({ classes, onEdit, onDelete, isLoading }: ClassListPro
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const [classToDelete, setClassToDelete] = useState<Class | null>(null);
   const { toast } = useToast();
+  const firestore = useFirestore();
 
   const openDeleteConfirm = (cls: Class) => {
     setClassToDelete(cls);
     setIsAlertOpen(true);
   };
 
-  const handleDelete = async () => {
+  const handleDelete = () => {
     if (!classToDelete) return;
-    const result = await deleteClass(classToDelete.id);
-    if (result.success) {
-      toast({ title: 'Classe supprimée', description: `La classe ${classToDelete.name} a été supprimée.` });
-      onDelete();
-    } else {
-      toast({ variant: 'destructive', title: 'Erreur', description: result.message });
-    }
+    deleteClass(firestore, classToDelete.id);
+    toast({ title: 'Classe supprimée', description: `La classe ${classToDelete.name} a été supprimée.` });
+    onDelete();
     setIsAlertOpen(false);
     setClassToDelete(null);
   };

@@ -1,55 +1,65 @@
 
-'use server';
+'use client';
 
-import { revalidatePath } from 'next/cache';
-import { firestore } from '@/firebase/admin';
+import {
+  collection,
+  addDoc,
+  updateDoc,
+  doc,
+  deleteDoc,
+  Firestore,
+} from 'firebase/firestore';
+import { errorEmitter } from '@/firebase/error-emitter';
+import { FirestorePermissionError } from '@/firebase/errors';
 
-type FormState = {
-  success: boolean;
-  message: string;
-};
-
-// Types correspondants aux entités Firestore
 type ClassPayload = {
     name: string;
     level: string;
     schoolYearId: string;
 };
 
-export async function createClass(payload: ClassPayload): Promise<FormState> {
-  try {
-    const docRef = firestore.collection('classes').doc();
-    await docRef.set({
-      ...payload,
-      id: docRef.id,
+export function createClass(db: Firestore, payload: ClassPayload) {
+  const data = { ...payload };
+  addDoc(collection(db, 'classes'), data)
+    .catch((serverError) => {
+      errorEmitter.emit(
+        'permission-error',
+        new FirestorePermissionError({
+          path: 'classes',
+          operation: 'create',
+          requestResourceData: data,
+        })
+      );
+      console.error('Erreur lors de la création de la classe:', serverError);
     });
-    revalidatePath('/admin/classes');
-    return { success: true, message: 'Classe créée avec succès.' };
-  } catch (error) {
-    console.error('Erreur lors de la création de la classe:', error);
-    return { success: false, message: 'Une erreur est survenue.' };
-  }
 }
 
-export async function updateClass(id: string, payload: Partial<ClassPayload>): Promise<FormState> {
-  try {
-    await firestore.collection('classes').doc(id).update(payload);
-    revalidatePath('/admin/classes');
-    return { success: true, message: 'Classe modifiée avec succès.' };
-  } catch (error) {
-    console.error('Erreur lors de la modification de la classe:', error);
-    return { success: false, message: 'Une erreur est survenue.' };
-  }
+export function updateClass(db: Firestore, id: string, payload: Partial<ClassPayload>) {
+  const data = { ...payload };
+  updateDoc(doc(db, 'classes', id), data)
+    .catch((serverError) => {
+      errorEmitter.emit(
+        'permission-error',
+        new FirestorePermissionError({
+          path: `classes/${id}`,
+          operation: 'update',
+          requestResourceData: data,
+        })
+      );
+      console.error('Erreur lors de la modification de la classe:', serverError);
+    });
 }
 
-export async function deleteClass(id: string): Promise<FormState> {
-  try {
-    // Note : Ajouter une logique pour vérifier si la classe contient des élèves avant suppression
-    await firestore.collection('classes').doc(id).delete();
-    revalidatePath('/admin/classes');
-    return { success: true, message: 'Classe supprimée avec succès.' };
-  } catch (error) {
-    console.error('Erreur lors de la suppression de la classe:', error);
-    return { success: false, message: 'Une erreur est survenue.' };
-  }
+export function deleteClass(db: Firestore, id: string) {
+  deleteDoc(doc(db, 'classes', id))
+    .catch((serverError) => {
+      errorEmitter.emit(
+        'permission-error',
+        new FirestorePermissionError({
+          path: `classes/${id}`,
+          operation: 'delete',
+        })
+      );
+      console.error('Erreur lors de la suppression de la classe:', serverError);
+    });
 }

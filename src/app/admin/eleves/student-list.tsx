@@ -1,3 +1,4 @@
+
 'use client';
 
 import {
@@ -16,24 +17,14 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
 import type { Student } from './types';
-import { useState } from 'react';
 import { toggleStudentStatus } from './actions';
 import { useToast } from '@/hooks/use-toast';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Badge } from '@/components/ui/badge';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
+import { useFirestore } from '@/firebase';
 
 interface StudentListProps {
   students: Student[];
@@ -44,10 +35,11 @@ interface StudentListProps {
 
 export function StudentList({ students, onEdit, onDelete, isLoading }: StudentListProps) {
   const { toast } = useToast();
+  const firestore = useFirestore();
 
   const handleToggleStatus = async (student: Student) => {
     const newStatus = !student.isActive;
-    const result = await toggleStudentStatus(student.id, newStatus);
+    const result = await toggleStudentStatus(firestore, student.id, newStatus);
     if (result.success) {
       toast({ title: 'Statut modifié', description: `L'élève ${student.firstName} ${student.lastName} a été ${newStatus ? 'réactivé' : 'désactivé'}.` });
       onDelete(); // refetch

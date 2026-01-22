@@ -1,9 +1,18 @@
 
-'use server';
+'use client';
 
-import { revalidatePath } from 'next/cache';
-import { firestore } from '@/firebase/admin';
-import { collection, getDocs, writeBatch } from 'firebase/firestore';
+import {
+  collection,
+  addDoc,
+  updateDoc,
+  doc,
+  deleteDoc,
+  getDocs,
+  writeBatch,
+  Firestore,
+} from 'firebase/firestore';
+import { errorEmitter } from '@/firebase/error-emitter';
+import { FirestorePermissionError } from '@/firebase/errors';
 
 type FormState = {
   success: boolean;
@@ -14,67 +23,80 @@ type SchoolYearPayload = {
     name: string;
 };
 
-export async function createSchoolYear(payload: SchoolYearPayload): Promise<FormState> {
-  try {
-    // Par défaut, une nouvelle année n'est pas active
-    await firestore.collection('school_years').add({ ...payload, isActive: false });
-    revalidatePath('/admin/annees-scolaires');
-    return { success: true, message: 'Année scolaire créée avec succès.' };
-  } catch (error) {
-    console.error("Erreur lors de la création de l'année scolaire:", error);
-    return { success: false, message: 'Une erreur est survenue.' };
-  }
+export function createSchoolYear(db: Firestore, payload: SchoolYearPayload) {
+  const data = { ...payload, isActive: false };
+  addDoc(collection(db, 'school_years'), data)
+    .catch((serverError) => {
+        errorEmitter.emit(
+          'permission-error',
+          new FirestorePermissionError({
+            path: 'school_years',
+            operation: 'create',
+            requestResourceData: data,
+          })
+        );
+        console.error("Erreur lors de la création de l'année scolaire:", serverError);
+    });
 }
 
-export async function updateSchoolYear(id: string, payload: SchoolYearPayload): Promise<FormState> {
-  try {
-    await firestore.collection('school_years').doc(id).update(payload);
-    revalidatePath('/admin/annees-scolaires');
-    return { success: true, message: 'Année scolaire modifiée avec succès.' };
-  } catch (error) {
-    console.error("Erreur lors de la modification de l'année scolaire:", error);
-    return { success: false, message: 'Une erreur est survenue.' };
-  }
+export function updateSchoolYear(db: Firestore, id: string, payload: SchoolYearPayload) {
+  const data = { ...payload };
+  updateDoc(doc(db, 'school_years', id), data)
+    .catch((serverError) => {
+      errorEmitter.emit(
+        'permission-error',
+        new FirestorePermissionError({
+          path: `school_years/${id}`,
+          operation: 'update',
+          requestResourceData: data,
+        })
+      );
+      console.error("Erreur lors de la modification de l'année scolaire:", serverError);
+    });
 }
 
-export async function deleteSchoolYear(id: string): Promise<FormState> {
-  try {
-    // Note : Ajouter une logique pour vérifier si l'année scolaire contient des données avant suppression
-    await firestore.collection('school_years').doc(id).delete();
-    revalidatePath('/admin/annees-scolaires');
-    return { success: true, message: 'Année scolaire supprimée avec succès.' };
-  } catch (error) {
-    console.error('Erreur lors de la suppression:', error);
-    return { success: false, message: 'Une erreur est survenue.' };
-  }
+export function deleteSchoolYear(db: Firestore, id: string) {
+  deleteDoc(doc(db, 'school_years', id))
+    .catch((serverError) => {
+      errorEmitter.emit(
+        'permission-error',
+        new FirestorePermissionError({
+          path: `school_years/${id}`,
+          operation: 'delete',
+        })
+      );
+      console.error('Erreur lors de la suppression:', serverError);
+    });
 }
 
-export async function setActiveSchoolYear(id: string): Promise<FormState> {
-    const batch = writeBatch(firestore);
-    const schoolYearsRef = firestore.collection('school_years');
+export async function setActiveSchoolYear(db: Firestore, id: string): Promise<FormState> {
+    const batch = writeBatch(db);
+    const schoolYearsRef = collection(db, 'school_years');
     
     try {
-        // 1. Mettre à jour toutes les autres années à isActive: false
-        const querySnapshot = await getDocs(collection(firestore, 'school_years'));
-        querySnapshot.forEach((doc) => {
-            if (doc.id !== id) {
-                batch.update(doc.ref, { isActive: false });
+        const querySnapshot = await getDocs(schoolYearsRef);
+        querySnapshot.forEach((docSnap) => {
+            if (docSnap.id !== id) {
+                batch.update(docSnap.ref, { isActive: false });
             }
         });
 
-        // 2. Mettre l'année sélectionnée à isActive: true
-        const docRef = schoolYearsRef.doc(id);
+        const docRef = doc(db, 'school_years', id);
         batch.update(docRef, { isActive: true });
 
-        // 3. Appliquer les changements
         await batch.commit();
 
-        revalidatePath('/admin/annees-scolaires');
-        revalidatePath('/admin/classes'); // Pour rafraichir la page des classes
         return { success: true, message: 'Année scolaire activée avec succès.' };
 
-    } catch (error) {
+    } catch (error: any) {
         console.error("Erreur lors de l'activation de l'année scolaire:", error);
-        return { success: false, message: 'Une erreur est survenue.' };
+        errorEmitter.emit(
+          'permission-error',
+          new FirestorePermissionError({
+            path: 'school_years',
+            operation: 'list', // Could be list or update
+          })
+        );
+        return { success: false, message: 'Une erreur est survenue lors de l\'activation.' };
     }
 }

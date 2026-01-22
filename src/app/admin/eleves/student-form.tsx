@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -32,6 +33,7 @@ import { fr } from 'date-fns/locale';
 import { useToast } from '@/hooks/use-toast';
 import type { Student, Class } from './types';
 import { createStudent, updateStudent } from './actions';
+import { useFirestore } from '@/firebase';
 
 const formSchema = z.object({
   firstName: z.string().min(2, 'Le prénom est requis.'),
@@ -55,6 +57,7 @@ export function StudentForm({ isOpen, onClose, classId, classes, studentData }: 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
   const isEditing = !!studentData;
+  const firestore = useFirestore();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -84,9 +87,9 @@ export function StudentForm({ isOpen, onClose, classId, classes, studentData }: 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setIsSubmitting(true);
     
-    const result = isEditing
-      ? await updateStudent(studentData.id, values)
-      : await createStudent(values);
+    const result = isEditing && studentData
+      ? await updateStudent(firestore, studentData.id, values)
+      : await createStudent(firestore, values);
 
     if (result.success) {
       toast({
