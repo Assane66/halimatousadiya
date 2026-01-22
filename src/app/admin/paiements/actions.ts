@@ -15,11 +15,6 @@ import {
 import { errorEmitter } from '@/firebase/error-emitter';
 import { FirestorePermissionError } from '@/firebase/errors';
 
-type FormState = {
-  success: boolean;
-  message: string;
-};
-
 type PaymentPayload = {
     studentId: string;
     amount: number;
@@ -94,31 +89,38 @@ async function getActiveSchoolYearId(db: Firestore): Promise<string> {
 }
 
 
-export async function createPayment(db: Firestore, payload: PaymentPayload): Promise<FormState> {
-  try {
-    const activeSchoolYearId = await getActiveSchoolYearId(db);
-    
-    const data = {
-      ...payload,
-      schoolYearId: activeSchoolYearId,
-      amount: Number(payload.amount),
-      date: Timestamp.fromDate(new Date(payload.date)),
-      createdAt: serverTimestamp(),
-    };
-
-    await addDoc(collection(db, 'payments'), data);
-    
-    return { success: true, message: 'Paiement enregistré avec succès.' };
-  } catch (error: any) {
-    console.error('Erreur lors de la création du paiement:', error);
-    errorEmitter.emit(
-        'permission-error',
-        new FirestorePermissionError({
-          path: 'payments',
-          operation: 'create',
-          requestResourceData: payload,
-        })
-      );
-    return { success: false, message: error.message || 'Une erreur est survenue.' };
-  }
+export function createPayment(db: Firestore, payload: PaymentPayload) {
+  (async () => {
+    try {
+      const activeSchoolYearId = await getActiveSchoolYearId(db);
+      
+      const data = {
+        ...payload,
+        schoolYearId: activeSchoolYearId,
+        amount: Number(payload.amount),
+        date: Timestamp.fromDate(new Date(payload.date)),
+        createdAt: serverTimestamp(),
+      };
+  
+      addDoc(collection(db, 'payments'), data)
+        .catch((serverError) => {
+            errorEmitter.emit(
+                'permission-error',
+                new FirestorePermissionError({
+                  path: 'payments',
+                  operation: 'create',
+                  requestResourceData: data,
+                })
+              );
+        });
+    } catch (error: any) {
+        errorEmitter.emit(
+            'permission-error',
+            new FirestorePermissionError({
+              path: 'school_years',
+              operation: 'list', // from getActiveSchoolYearId
+            })
+          );
+    }
+  })();
 }

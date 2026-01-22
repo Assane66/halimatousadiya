@@ -17,11 +17,6 @@ import {
 import { errorEmitter } from '@/firebase/error-emitter';
 import { FirestorePermissionError } from '@/firebase/errors';
 
-type FormState = {
-  success: boolean;
-  message: string;
-};
-
 type StudentPayload = {
     firstName: string;
     lastName: string;
@@ -51,72 +46,71 @@ async function generateMatriculeNumber(db: Firestore): Promise<string> {
     return `YHS${year}${newNumber}`;
 }
 
-export async function createStudent(db: Firestore, payload: StudentPayload): Promise<FormState> {
-  try {
-    const matriculeNumber = await generateMatriculeNumber(db);
-    
-    const data = {
-      ...payload,
-      matriculeNumber,
-      isActive: true,
-      createdAt: serverTimestamp(),
-      dateOfBirth: Timestamp.fromDate(new Date(payload.dateOfBirth)),
-    };
-
-    await addDoc(collection(db, 'students'), data);
-    
-    return { success: true, message: 'Élève créé avec succès.' };
-  } catch (error: any) {
-    console.error('Erreur lors de la création de l\'élève:', error);
-    errorEmitter.emit(
-        'permission-error',
-        new FirestorePermissionError({
-          path: 'students',
-          operation: 'create',
-          requestResourceData: payload,
-        })
-      );
-    return { success: false, message: 'Une erreur est survenue lors de la création.' };
-  }
+export function createStudent(db: Firestore, payload: StudentPayload) {
+    (async () => {
+        try {
+            const matriculeNumber = await generateMatriculeNumber(db);
+            
+            const data = {
+              ...payload,
+              matriculeNumber,
+              isActive: true,
+              createdAt: serverTimestamp(),
+              dateOfBirth: Timestamp.fromDate(new Date(payload.dateOfBirth)),
+            };
+        
+            addDoc(collection(db, 'students'), data)
+                .catch((serverError) => {
+                    errorEmitter.emit(
+                        'permission-error',
+                        new FirestorePermissionError({
+                          path: 'students',
+                          operation: 'create',
+                          requestResourceData: data,
+                        })
+                      );
+                });
+        } catch (error: any) {
+            errorEmitter.emit(
+                'permission-error',
+                new FirestorePermissionError({
+                  path: 'students',
+                  operation: 'list', // For the getDocs in generateMatriculeNumber
+                })
+              );
+        }
+    })();
 }
 
-export async function updateStudent(db: Firestore, id: string, payload: Partial<StudentPayload>): Promise<FormState> {
-  try {
-    const updatePayload: any = { ...payload };
-    if (payload.dateOfBirth) {
-        updatePayload.dateOfBirth = Timestamp.fromDate(new Date(payload.dateOfBirth));
-    }
-    
-    await updateDoc(doc(db, 'students', id), updatePayload);
-    return { success: true, message: 'Élève modifié avec succès.' };
-  } catch (error: any) {
-    console.error('Erreur lors de la modification de l\'élève:', error);
-    errorEmitter.emit(
-        'permission-error',
-        new FirestorePermissionError({
-          path: `students/${id}`,
-          operation: 'update',
-          requestResourceData: payload,
-        })
-      );
-    return { success: false, message: 'Une erreur est survenue lors de la modification.' };
+export function updateStudent(db: Firestore, id: string, payload: Partial<StudentPayload>) {
+  const updatePayload: any = { ...payload };
+  if (payload.dateOfBirth) {
+      updatePayload.dateOfBirth = Timestamp.fromDate(new Date(payload.dateOfBirth));
   }
+  
+  updateDoc(doc(db, 'students', id), updatePayload)
+    .catch((serverError) => {
+        errorEmitter.emit(
+            'permission-error',
+            new FirestorePermissionError({
+              path: `students/${id}`,
+              operation: 'update',
+              requestResourceData: updatePayload,
+            })
+          );
+    });
 }
 
-export async function toggleStudentStatus(db: Firestore, id: string, isActive: boolean): Promise<FormState> {
-  try {
-    await updateDoc(doc(db, 'students', id), { isActive });
-    return { success: true, message: `Statut de l'élève mis à jour.` };
-  } catch (error: any) {
-    console.error('Erreur lors du changement de statut:', error);
-    errorEmitter.emit(
-        'permission-error',
-        new FirestorePermissionError({
-          path: `students/${id}`,
-          operation: 'update',
-          requestResourceData: { isActive },
-        })
-      );
-    return { success: false, message: 'Une erreur est survenue.' };
-  }
+export function toggleStudentStatus(db: Firestore, id: string, isActive: boolean) {
+    updateDoc(doc(db, 'students', id), { isActive })
+        .catch((serverError) => {
+            errorEmitter.emit(
+                'permission-error',
+                new FirestorePermissionError({
+                  path: `students/${id}`,
+                  operation: 'update',
+                  requestResourceData: { isActive },
+                })
+              );
+        });
 }

@@ -35,7 +35,6 @@ export function createSchoolYear(db: Firestore, payload: SchoolYearPayload) {
             requestResourceData: data,
           })
         );
-        console.error("Erreur lors de la création de l'année scolaire:", serverError);
     });
 }
 
@@ -51,7 +50,6 @@ export function updateSchoolYear(db: Firestore, id: string, payload: SchoolYearP
           requestResourceData: data,
         })
       );
-      console.error("Erreur lors de la modification de l'année scolaire:", serverError);
     });
 }
 
@@ -65,7 +63,6 @@ export function deleteSchoolYear(db: Firestore, id: string) {
           operation: 'delete',
         })
       );
-      console.error('Erreur lors de la suppression:', serverError);
     });
 }
 
@@ -89,7 +86,6 @@ export async function setActiveSchoolYear(db: Firestore, id: string): Promise<Fo
         return { success: true, message: 'Année scolaire activée avec succès.' };
 
     } catch (error: any) {
-        console.error("Erreur lors de l'activation de l'année scolaire:", error);
         errorEmitter.emit(
           'permission-error',
           new FirestorePermissionError({

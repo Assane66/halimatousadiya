@@ -30,7 +30,6 @@ export function createClass(db: Firestore, payload: ClassPayload) {
           requestResourceData: data,
         })
       );
-      console.error('Erreur lors de la création de la classe:', serverError);
     });
 }
 
@@ -46,7 +45,6 @@ export function updateClass(db: Firestore, id: string, payload: Partial<ClassPay
           requestResourceData: data,
         })
       );
-      console.error('Erreur lors de la modification de la classe:', serverError);
     });
 }
 
@@ -60,6 +58,5 @@ export function deleteClass(db: Firestore, id: string) {
           operation: 'delete',
         })
       );
-      console.error('Erreur lors de la suppression de la classe:', serverError);
     });
 }

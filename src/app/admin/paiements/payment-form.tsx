@@ -62,25 +62,17 @@ export function PaymentForm({ isOpen, onClose, studentId }: PaymentFormProps) {
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+  const onSubmit = (values: z.infer<typeof formSchema>) => {
     setIsSubmitting(true);
     
     const payload = { ...values, studentId };
-    const result = await createPayment(firestore, payload);
+    createPayment(firestore, payload);
 
-    if (result.success) {
-      toast({
+    toast({
         title: 'Paiement enregistré',
         description: `Le paiement a été ajouté avec succès.`,
-      });
-      onClose(true);
-    } else {
-      toast({
-        variant: 'destructive',
-        title: 'Erreur',
-        description: result.message,
-      });
-    }
+    });
+    onClose(true);
     setIsSubmitting(false);
   };
 

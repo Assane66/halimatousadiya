@@ -37,15 +37,11 @@ export function StudentList({ students, onEdit, onDelete, isLoading }: StudentLi
   const { toast } = useToast();
   const firestore = useFirestore();
 
-  const handleToggleStatus = async (student: Student) => {
+  const handleToggleStatus = (student: Student) => {
     const newStatus = !student.isActive;
-    const result = await toggleStudentStatus(firestore, student.id, newStatus);
-    if (result.success) {
-      toast({ title: 'Statut modifié', description: `L'élève ${student.firstName} ${student.lastName} a été ${newStatus ? 'réactivé' : 'désactivé'}.` });
-      onDelete(); // refetch
-    } else {
-      toast({ variant: 'destructive', title: 'Erreur', description: result.message });
-    }
+    toggleStudentStatus(firestore, student.id, newStatus);
+    toast({ title: 'Statut modifié', description: `L'élève ${student.firstName} ${student.lastName} a été ${newStatus ? 'réactivé' : 'désactivé'}.` });
+    onDelete(); // refetch
   };
 
   if (isLoading) {

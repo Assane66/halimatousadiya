@@ -84,26 +84,20 @@ export function StudentForm({ isOpen, onClose, classId, classes, studentData }: 
     });
   }, [studentData, classId, form]);
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+  const onSubmit = (values: z.infer<typeof formSchema>) => {
     setIsSubmitting(true);
     
-    const result = isEditing && studentData
-      ? await updateStudent(firestore, studentData.id, values)
-      : await createStudent(firestore, values);
+    if (isEditing && studentData) {
+      updateStudent(firestore, studentData.id, values);
+    } else {
+      createStudent(firestore, values);
+    }
 
-    if (result.success) {
-      toast({
+    toast({
         title: isEditing ? 'Élève modifié' : 'Élève inscrit',
         description: `L'élève ${values.firstName} ${values.lastName} a été ${isEditing ? 'mis à jour' : 'inscrit'}.`,
-      });
-      onClose(true);
-    } else {
-      toast({
-        variant: 'destructive',
-        title: 'Erreur',
-        description: result.message,
-      });
-    }
+    });
+    onClose(true);
     setIsSubmitting(false);
   };
 
