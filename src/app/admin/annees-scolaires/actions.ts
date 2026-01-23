@@ -86,11 +86,14 @@ export async function setActiveSchoolYear(db: Firestore, id: string): Promise<Fo
         return { success: true, message: 'Année scolaire activée avec succès.' };
 
     } catch (error: any) {
+        // This complex operation can fail on the read (getDocs) or the write (commit).
+        // Emitting a contextual error here will help debug which one is failing.
+        // We assume 'list' as the primary read operation, but the developer can infer from the rules.
         errorEmitter.emit(
           'permission-error',
           new FirestorePermissionError({
             path: 'school_years',
-            operation: 'list', // Could be list or update
+            operation: 'list', // This operation reads the collection then performs a batch write.
           })
         );
         return { success: false, message: 'Une erreur est survenue lors de l\'activation.' };
