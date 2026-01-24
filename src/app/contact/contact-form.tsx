@@ -45,9 +45,30 @@ export function ContactForm() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
     const { name, email, phone, message } = values;
+
+    // 1. Save to Firestore
+    try {
+      const firestore = (window as any).firebaseFirestore; // Quick access or better import
+      // Since useFirestore is not available here easily without refactoring, I'll use the client access if possible
+      // But better to just use regular firebase client
+      const { getFirestore, collection, addDoc, serverTimestamp } = await import('firebase/firestore');
+      const { getApp } = await import('firebase/app');
+      const db = getFirestore(getApp());
+
+      await addDoc(collection(db, 'messages'), {
+        name,
+        email,
+        phone: phone || "Non fourni",
+        message,
+        status: 'new',
+        createdAt: serverTimestamp(),
+      });
+    } catch (e) {
+      console.error("Error saving message to firestore", e);
+    }
 
     const whatsappMessage = `
 Bonjour,
@@ -63,74 +84,75 @@ ${message}
     const whatsappUrl = `https://wa.me/221786881105?text=${encodedMessage}`;
 
     window.open(whatsappUrl, "_blank");
-    
-    // Reset form after a short delay
-    setTimeout(() => {
-        form.reset();
-        setIsSubmitting(false);
-    }, 1000);
+
+    form.reset();
+    setIsSubmitting(false);
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Envoyez-nous un message</CardTitle>
+    <Card className="border-none shadow-xl rounded-[2.5rem] bg-white overflow-hidden">
+      <CardHeader className="bg-emerald-600 p-8 text-white">
+        <CardTitle className="text-2xl font-bold">Envoyez-nous un message</CardTitle>
+        <p className="text-emerald-100 text-sm mt-2">Nous vous répondrons dans les plus brefs délais.</p>
       </CardHeader>
-      <CardContent>
+      <CardContent className="p-8">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <FormField
               control={form.control}
               name="name"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Nom complet</FormLabel>
+                <FormItem className="space-y-1">
+                  <FormLabel className="text-slate-900 font-bold uppercase tracking-widest text-[10px]">Nom complet</FormLabel>
                   <FormControl>
-                    <Input placeholder="Votre nom" {...field} />
+                    <Input placeholder="Ex: Assane Ba" {...field} className="rounded-xl border-slate-200 focus:ring-emerald-500" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Votre email" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="phone"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Téléphone (Optionnel)</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="Votre numéro de téléphone"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem className="space-y-1">
+                    <FormLabel className="text-slate-900 font-bold uppercase tracking-widest text-[10px]">Email</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Votre email" {...field} className="rounded-xl border-slate-200 focus:ring-emerald-500" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="phone"
+                render={({ field }) => (
+                  <FormItem className="space-y-1">
+                    <FormLabel className="text-slate-900 font-bold uppercase tracking-widest text-[10px]">Téléphone</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="Ex: 78 777 07 07"
+                        {...field}
+                        className="rounded-xl border-slate-200 focus:ring-emerald-500"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
             <FormField
               control={form.control}
               name="message"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Message</FormLabel>
+                <FormItem className="space-y-1">
+                  <FormLabel className="text-slate-900 font-bold uppercase tracking-widest text-[10px]">Message</FormLabel>
                   <FormControl>
                     <Textarea
                       placeholder="Tapez votre message ici..."
-                      className="min-h-[120px]"
+                      className="min-h-[150px] rounded-2xl border-slate-200 focus:ring-emerald-500"
                       {...field}
                     />
                   </FormControl>
@@ -139,10 +161,10 @@ ${message}
               )}
             />
 
-            <Button type="submit" disabled={isSubmitting} className="w-full">
+            <Button type="submit" disabled={isSubmitting} className="w-full py-6 rounded-2xl bg-emerald-600 hover:bg-emerald-700 shadow-xl shadow-emerald-200 font-bold uppercase tracking-widest text-xs transition-all hover:scale-[1.02]">
               {isSubmitting
-                ? "Redirection vers WhatsApp..."
-                : "Envoyer via WhatsApp"}
+                ? "Traitement en cours..."
+                : "Envoyer le message"}
             </Button>
           </form>
         </Form>

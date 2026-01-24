@@ -24,11 +24,15 @@ export const NAV_LINKS = [
 ];
 
 export const ADMIN_NAV_LINKS = [
-  { href: "/admin/dashboard", label: "Tableau de Bord" },
-  { href: "/admin/annees-scolaires", label: "Années Scolaires" },
-  { href: "/admin/classes", label: "Classes" },
-  { href: "/admin/eleves", label: "Élèves" },
-  { href: "/admin/paiements", label: "Paiements" },
+  { href: "/admin/dashboard", label: "Tableau de Bord", icon: "LayoutDashboard" },
+  { href: "/admin/actualites", label: "Actualités", icon: "Newspaper" },
+  { href: "/admin/galerie", label: "Galerie", icon: "Image" },
+  { href: "/admin/equipe", label: "Équipe", icon: "Users" },
+  { href: "/admin/annees-scolaires", label: "Années Scolaires", icon: "Calendar" },
+  { href: "/admin/classes", label: "Classes", icon: "School" },
+  { href: "/admin/eleves", label: "Élèves", icon: "GraduationCap" },
+  { href: "/admin/paiements", label: "Paiements", icon: "Wallet" },
+  { href: "/admin/messages", label: "Messages", icon: "Mail" },
 ];
 
 export const TEAM_MEMBERS = [

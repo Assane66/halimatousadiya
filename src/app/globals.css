@@ -74,6 +74,7 @@
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }
@@ -85,5 +86,21 @@
   h5,
   h6 {
     @apply font-headline;
+  }
+}
+
+@layer components {
+
+  /* Calendar Dropdown Styling */
+  .rdp-dropdown {
+    @apply bg-transparent border-none font-bold text-slate-700 cursor-pointer focus:outline-none px-3 py-1.5 rounded-xl hover:bg-white hover:shadow-sm transition-all text-xs;
+  }
+
+  .rdp-caption_dropdowns {
+    @apply flex items-center gap-1 bg-slate-100/50 backdrop-blur-md border border-slate-200/50 rounded-[1.2rem] p-1 shadow-inner mx-1;
+  }
+
+  .rdp-day_selected {
+    @apply !bg-emerald-600 !text-white !opacity-100 shadow-lg shadow-emerald-200 rounded-xl transition-all scale-110;
   }
 }

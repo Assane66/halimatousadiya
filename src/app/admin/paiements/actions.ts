@@ -16,16 +16,16 @@ import { errorEmitter } from '@/firebase/error-emitter';
 import { FirestorePermissionError } from '@/firebase/errors';
 
 type PaymentPayload = {
-    studentId: string;
-    amount: number;
-    type: 'Inscription' | 'Mensualite' | 'Autre';
-    date: Date;
+  studentId: string;
+  amount: number;
+  type: 'Inscription' | 'Mensualite' | 'Autre';
+  date: Date;
 };
 
 type StudentSearchResult = {
-    id: string;
-    name: string;
-    matricule: string;
+  id: string;
+  name: string;
+  matricule: string;
 };
 
 export async function searchStudents(db: Firestore, searchTerm: string): Promise<StudentSearchResult[]> {
@@ -33,7 +33,7 @@ export async function searchStudents(db: Firestore, searchTerm: string): Promise
     return [];
   }
   const studentsRef = collection(db, 'students');
-  
+
   const searchTermUpper = searchTerm.toUpperCase();
   const nameQuery = query(studentsRef,
     where('lastName', '>=', searchTerm),
@@ -72,55 +72,50 @@ export async function searchStudents(db: Firestore, searchTerm: string): Promise
     });
 
     return Array.from(studentsMap.values());
-  } catch(error) {
-      console.error("Erreur lors de la recherche d'élèves:", error);
-      return [];
+  } catch (error) {
+    console.error("Erreur lors de la recherche d'élèves:", error);
+    return [];
   }
 }
 
 async function getActiveSchoolYearId(db: Firestore): Promise<string> {
-    const schoolYearRef = collection(db, 'school_years');
-    const q = query(schoolYearRef, where('isActive', '==', true), limit(1));
-    const snapshot = await getDocs(q);
-    if (snapshot.empty) {
-        throw new Error("Aucune année scolaire active trouvée. Veuillez en activer une.");
-    }
-    return snapshot.docs[0].id;
+  const schoolYearRef = collection(db, 'school_years');
+  const q = query(schoolYearRef, where('isActive', '==', true), limit(1));
+  const snapshot = await getDocs(q);
+  if (snapshot.empty) {
+    throw new Error("Aucune année scolaire active trouvée. Veuillez en activer une.");
+  }
+  return snapshot.docs[0].id;
 }
 
 
-export function createPayment(db: Firestore, payload: PaymentPayload) {
-  (async () => {
-    try {
-      const activeSchoolYearId = await getActiveSchoolYearId(db);
-      
-      const data = {
-        ...payload,
-        schoolYearId: activeSchoolYearId,
-        amount: Number(payload.amount),
-        date: Timestamp.fromDate(new Date(payload.date)),
-        createdAt: serverTimestamp(),
-      };
-  
-      addDoc(collection(db, 'payments'), data)
-        .catch((serverError) => {
-            errorEmitter.emit(
-                'permission-error',
-                new FirestorePermissionError({
-                  path: 'payments',
-                  operation: 'create',
-                  requestResourceData: data,
-                })
-              );
-        });
-    } catch (error: any) {
-        errorEmitter.emit(
-            'permission-error',
-            new FirestorePermissionError({
-              path: 'school_years',
-              operation: 'list', // from getActiveSchoolYearId
-            })
-          );
+export async function createPayment(db: Firestore, payload: PaymentPayload): Promise<void> {
+  try {
+    const activeSchoolYearId = await getActiveSchoolYearId(db);
+
+    console.log("Année scolaire active pour le paiement:", activeSchoolYearId);
+
+    const data = {
+      ...payload,
+      schoolYearId: activeSchoolYearId,
+      amount: Number(payload.amount),
+      date: Timestamp.fromDate(new Date(payload.date)),
+      createdAt: serverTimestamp(),
+    };
+
+    console.log("Tentative d'enregistrement du paiement:", data);
+    await addDoc(collection(db, 'payments'), data);
+    console.log("Paiement enregistré avec succès !");
+  } catch (error: any) {
+    if (error.code === 'permission-denied') {
+      errorEmitter.emit(
+        'permission-error',
+        new FirestorePermissionError({
+          path: 'payments',
+          operation: 'create',
+        })
+      );
     }
-  })();
+    throw error;
+  }
 }

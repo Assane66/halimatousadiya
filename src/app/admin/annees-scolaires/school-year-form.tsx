@@ -53,7 +53,7 @@ export function SchoolYearForm({ isOpen, onClose, schoolYearData }: SchoolYearFo
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     setIsSubmitting(true);
-    
+
     if (isEditing && schoolYearData) {
       updateSchoolYear(firestore, schoolYearData.id, values);
     } else {
@@ -70,38 +70,56 @@ export function SchoolYearForm({ isOpen, onClose, schoolYearData }: SchoolYearFo
 
   return (
     <Dialog open={isOpen} onOpenChange={() => onClose(false)}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>{isEditing ? 'Modifier l\'année scolaire' : 'Ajouter une année scolaire'}</DialogTitle>
-          <DialogDescription>
-            Utilisez un format comme "2024-2025".
+      <DialogContent className="max-w-md rounded-[2.5rem] border-none shadow-2xl p-0 overflow-hidden bg-white">
+        <DialogHeader className="bg-emerald-600 p-8 text-white">
+          <DialogTitle className="text-2xl font-bold uppercase tracking-tight">
+            {isEditing ? 'Modifier l\'année' : 'Nouvelle Année'}
+          </DialogTitle>
+          <DialogDescription className="text-emerald-100 opacity-90">
+            Configurez une période scolaire au format "2024-2025".
           </DialogDescription>
         </DialogHeader>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Nom de l'année scolaire</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Ex: 2024-2025" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <DialogFooter>
-              <Button type="button" variant="outline" onClick={() => onClose(false)} disabled={isSubmitting}>
-                Annuler
-              </Button>
-              <Button type="submit" disabled={isSubmitting}>
-                {isSubmitting ? 'Enregistrement...' : 'Enregistrer'}
-              </Button>
-            </DialogFooter>
-          </form>
-        </Form>
+        <div className="p-8">
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem className="space-y-1">
+                    <FormLabel className="text-slate-900 font-bold uppercase tracking-widest text-[10px]">Nom de l'année scolaire</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="Ex: 2024-2025"
+                        {...field}
+                        className="rounded-xl border-slate-200 focus:ring-emerald-500 h-12 text-lg font-medium"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <DialogFooter className="flex gap-3 sm:justify-between items-center sm:gap-0 mt-8">
+                <Button
+                  type="button"
+                  variant="ghost"
+                  onClick={() => onClose(false)}
+                  disabled={isSubmitting}
+                  className="rounded-xl font-bold uppercase tracking-widest text-[10px] h-12 px-6"
+                >
+                  Annuler
+                </Button>
+                <Button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="rounded-xl bg-emerald-600 hover:bg-emerald-700 font-bold uppercase tracking-widest text-[10px] h-12 px-8 shadow-lg shadow-emerald-200"
+                >
+                  {isSubmitting ? 'Traitement...' : 'Enregistrer'}
+                </Button>
+              </DialogFooter>
+            </form>
+          </Form>
+        </div>
       </DialogContent>
     </Dialog>
   );
