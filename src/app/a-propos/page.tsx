@@ -137,8 +137,8 @@ export default function AboutPage() {
                                         <CardContent className="p-6 text-center">
                                             <h3 className="text-xl font-bold text-slate-900 group-hover:text-emerald-700 transition-colors">{member.name}</h3>
                                             <p className="text-emerald-600 text-xs font-bold uppercase tracking-widest mt-1 mb-3">{member.title}</p>
-                                            <p className="text-slate-500 text-sm leading-relaxed line-clamp-2 italic">
-                                                "{member.bio}"
+                                            <p className="text-slate-500 text-sm leading-relaxed line-clamp-2">
+                                                {member.bio}
                                             </p>
                                         </CardContent>
                                     </Card>

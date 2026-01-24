@@ -83,10 +83,7 @@ function PaymentsContent() {
         setPayments(simpleData);
 
         if (error.message?.includes('index')) {
-          toast({
-            title: "Indexation requise",
-            description: "Certaines fonctions de tri seront limitées jusqu'à la création de l'index Firestore.",
-          });
+          console.warn("Indexation requise: Certaines fonctions de tri seront limitées jusqu'à la création de l'index Firestore.");
         }
       } catch (innerError) {
         console.error("Fallback failed:", innerError);

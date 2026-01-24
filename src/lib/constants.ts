@@ -11,7 +11,7 @@ export const CONTACT_INFO = {
   address: "Tivaouane Peulh, Apix Îlot 1.",
   fullAddress: "Tivaouane Peulh, Apix Îlot 1, Sénégal",
   mapEmbedUrl:
-    "https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d1196.9730207362957!2d-17.291513077355052!3d14.802748315336803!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sfr!2ssn!4v1758123791002!5m2!1sfr!2ssn",
+    "https://www.google.com/maps/embed?pb=!4v1769284275711!6m8!1m7!1sLrG9Pd2-QV58Vtrmtr9nGQ!2m2!1d14.80272019846477!2d-17.29263889248244!3f243.40246450625023!4f20.818126611983473!5f0.7820865974627469",
 };
 
 export const NAV_LINKS = [
