@@ -17,6 +17,12 @@ import {
 } from "@/components/ui/card";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 import { BLOG_POSTS, SITE_NAME } from "@/lib/constants";
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: "Accueil | Daara Moderne de l'Excellence à Tivaouane Peulh",
+  description: "Bienvenue à l'Institut Islamique Yaye Halimatou Saadiya. Découvrez notre programme franco-arabe, notre dévotion à la mémorisation du Coran et notre engagement envers l'excellence académique.",
+};
 
 export default function Home() {
   const heroImage = PlaceHolderImages.find((img) => img.id === "hero-1");

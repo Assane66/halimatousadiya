@@ -5,9 +5,40 @@ import { ClientLayout } from "./client-layout";
 import { FirebaseClientProvider } from "@/firebase";
 
 export const metadata: Metadata = {
-  title: "Institut Islamique Yaye Halimatou Saadiya - DAARA MODERNE DE L'EXCELLENCE",
+  metadataBase: new URL('https://yayehalimatousaadiya.com'),
+  title: {
+    default: "Institut Islamique Yaye Halimatou Saadiya - DAARA MODERNE DE L'EXCELLENCE",
+    template: "%s | Institut YHS"
+  },
   description:
-    "Institut Islamique Yaye Halimatou Saadiya - Éclairer les esprits, nourrir les âmes.",
+    "Institut Islamique Yaye Halimatou Saadiya à Tivaouane Peulh. Excellence académique, mémorisation du Coran et éducation islamique de qualité.",
+  keywords: ["institut islamique", "daara moderne", "Tivaouane Peulh", "éducation islamique", "Sénégal", "mémorisation coran", "école franco-arabe"],
+  authors: [{ name: "Yaye Halimatou Saadiya" }],
+  creator: "Admin YHS",
+  openGraph: {
+    type: "website",
+    locale: "fr_FR",
+    url: "https://yayehalimatousaadiya.com",
+    title: "Institut Islamique Yaye Halimatou Saadiya",
+    description: "Éclairer les esprits, nourrir les âmes. Daara Moderne de l'Excellence à Tivaouane Peulh.",
+    siteName: "Institut Yaye Halimatou Saadiya",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Institut Islamique Yaye Halimatou Saadiya",
+    description: "Éducation islamique et académique d'excellence.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
 };
 
 export default function RootLayout({
