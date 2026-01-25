@@ -58,7 +58,7 @@ export default function BlogPage() {
               ...doc.data()
             }));
             setPosts(simplePosts.length > 0 ? simplePosts : STATIC_POSTS);
-            toast.error("Erreur d'index Firestore détectée. Tri désactivé temporairement.");
+            console.warn("Erreur d'index Firestore détectée. Tri désactivé temporairement.");
           } catch (e) {
             setError(err.message);
             setPosts(STATIC_POSTS);
